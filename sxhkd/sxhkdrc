@@ -10,6 +10,10 @@ super + shift + Return
 super + slash
 	rofi -show drun
 
+#calculator
+super + period
+	rofi -show calc -modi calc -no-show-match -no-sort
+
 # Maim Screenshots
 # Select
 super+shift+Print
@@ -57,7 +61,7 @@ super + y
 
 # swap the current node and the biggest window
 super + g
-	bspc node -s biggest.window
+	bspc node -s biggest.local
 
 #
 # state/flags
@@ -112,6 +116,10 @@ super + {_,shift + }c
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
+
+# switch workspace to the next/previous desktop in the current monitor
+super + shift + bracket{left,right}
+	bspc node -d {prev,next}.local
 
 # focus the last node/desktop
 super + {grave,Tab}
