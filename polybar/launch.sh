@@ -18,8 +18,20 @@ killall -q polybar
 
 # polybar alli3 &
 
-polybar mon1 &
-polybar mon2 &
-polybar mon3 &
+if type "xrandr"; then
+  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+    MONITOR=$m polybar --reload backdrop &
+    MONITOR=$m polybar --reload barworkspaces &
+    MONITOR=$m polybar --reload dateandtime &
+    MONITOR=$m polybar --reload pulseaudio &
+
+  done
+else
+  polybar --reload backdrop &
+  polybar --reload barworkspaces &
+  polybar --reload dateandtime &
+  polybar --reload pulseaudio &
+fi
+
 
 echo "Bars launched..."

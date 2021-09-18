@@ -8,7 +8,7 @@ super + shift + Return
 
 # program launcher
 super + slash
-	rofi -show drun
+	rofi -show combi
 
 #calculator
 super + period
