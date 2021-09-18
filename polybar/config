@@ -62,18 +62,8 @@ modules-center = spacer
 ;modules-right = pulseaudiospacer pulseaudio spacer
 
 wm-restack = bspwm
-;wm-restack = i3
 
 override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
-
-cursor-click = pointer
-cursor-scroll = ns-resize
 
 
 [bar/modulebar]
@@ -90,7 +80,8 @@ font-6 = "JetBrains Mono Nerd Font:style=Bold:size=14;3"
 height = ${config.bar-height}
 radius = 10px
 background = ${colors.background-module}
-override-redirect = false
+override-redirect = true
+wm-restack = bspwm
 fixed-center = true
 
 
