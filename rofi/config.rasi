@@ -130,7 +130,6 @@ textbox {
 listview {
     padding:      2px 0px 0px ;
     scrollbar:    true;
-    border-color: var(separatorcolor);
     spacing:      2px ;
     fixed-height: 0;
     border:       0px 0px 0px ;
@@ -139,8 +138,9 @@ scrollbar {
     width:        4px ;
     padding:      0;
     handle-width: 8px ;
-    border:       0;
-    handle-color: var(normal-foreground);
+    // handle-color: var(normal-foreground);
+    handle-color: rgba (0, 0, 0, 0%);
+    // border-radius: 0px;
 }
 sidebar {
     border-color: var(separatorcolor);

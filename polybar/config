@@ -34,36 +34,12 @@ alert = #bd2c40
 bar-height = 21
 
 [bar/backdrop]
+inherit = bar/modulebar
 monitor = ${env:MONITOR:}
-width = 100%
-height = ${config.bar-height}
-offset-x = 0%
-offset-y = 0%
-radius = 0
-fixed-center = true
-
 background = ${colors.background}
-foreground = ${colors.foreground}
 
-line-size = 3
-line-color = #fff
-
-border-size = 0
-border-color = #000000
-
-padding-left = 0
-padding-right = 0
-
-module-margin-left = 0
-module-margin-right = 0
-
-;modules-left = spacer bspwmspacer bspwm spacer timespacer time spacer datespacer date
-modules-center = spacer
-;modules-right = pulseaudiospacer pulseaudio spacer
-
-wm-restack = bspwm
-
-override-redirect = true
+modules-left = s2 open ms2 bspwms bspwm ms2 close s4 open ms2 times time ms3 dates date ms2 close
+modules-right = open ms2 pulseaudios pulseaudio ms2 close s2 
 
 
 [bar/modulebar]
@@ -76,6 +52,7 @@ font-3 = "Hack Nerd Font:style=Bold:size=10;2"
 font-4 = "Hack Nerd Font:style=Bold:size=13;2"
 font-5 = "Hack Nerd Font:style=Bold:size=14;3"
 font-6 = "JetBrains Mono Nerd Font:style=Bold:size=14;3"
+font-7 = "Hack Nerd Font:style=Bold:size=15;3"
 
 height = ${config.bar-height}
 radius = 10px
@@ -84,45 +61,80 @@ override-redirect = true
 wm-restack = bspwm
 fixed-center = true
 
+[module/open]
+type = custom/text
+content-foreground = ${colors.background-module}
+content = "%{T8}%{T-}"
 
-[bar/barworkspaces]
-inherit = bar/modulebar
-modules-center = bspwmspacer bspwm
-width = 8%
-offset-x = 1%
+[module/close]
+type = custom/text
+content-foreground = ${colors.background-module}
+content = "%{T8}%{T-}"
 
-[bar/dateandtime]
-inherit = bar/modulebar
-width = 12%
-offset-x = 10%
-modules-center = timespacer time spacer datespacer date
+[module/ms1]
+type = custom/text
+content-background = ${colors.background-module}
+content = " "
 
-[bar/pulseaudio]
-inherit = bar/modulebar
-width = 12%
-offset-x = 87%
-modules-center = pulseaudiospacer pulseaudio
+[module/ms2]
+inherit = module/ms1
+content = "  "
 
+[module/ms3]
+inherit = module/ms1
+content = "   "
 
-[module/spacer]
+[module/ms4]
+inherit = module/ms1
+content = "    "
+
+[module/ms5]
+inherit = module/ms1
+content = "    "
+
+[module/ms6]
+inherit = module/ms1
+content = "     "
+
+[module/ms7]
+inherit = module/ms1
+content = "      "
+
+[module/ms8]
+inherit = module/ms1
+content = "       "
+
+[module/s1]
+type = custom/text
+content = " "
+
+[module/s2]
 type = custom/text
 content = "  "
 
-[module/timespacer]
+[module/s3]
+type = custom/text
+content = "   "
+
+[module/s4]
+type = custom/text
+content = "    "
+
+[module/times]
 type = custom/text
 content = "%{T6}%{T-}"
 content-foreground = ${colors.background-light}
 content-background = ${colors.background-alt}
 content-padding = 1
 
-[module/datespacer]
+[module/dates]
 type = custom/text
 content = "%{T6}%{T-}"
 content-foreground = ${colors.background-light}
 content-background = ${colors.background-alt}
 content-padding = 1
 
-[module/bspwmspacer]
+[module/bspwms]
 type = custom/text
 content = "%{T6}舘%{T-}"
 content-foreground = ${colors.background-light}
@@ -210,10 +222,8 @@ type = internal/pulseaudio
 label-volume = "  %percentage%%  "
 label-volume-foreground = ${colors.foreground}
 label-volume-background = ${colors.background-module}
-label-background = ${colors.background-module}
 
-
-label-muted = " 0% %{T7}ﱢﱢﱢﱢﱢﱢﱢﱢﱢﱢ%{T-}"
+label-muted = " 0% %{T7}ﱢﱢﱢﱢﱢﱢﱢﱢﱢﱢﱢ%{T-}"
 label-muted-foreground = #2C292A
 label-muted-background = ${colors.background-module}
 
@@ -222,7 +232,11 @@ ramp-volume-foreground = ${colors.background-light}
 ramp-volume-background = ${colors.background-alt}
 ramp-volume-padding = 1
 
-bar-volume-width = 10
+bar-volume-indicator-background = ${colors.background-module}
+bar-volume-fill-background = ${colors.background-module}
+bar-volume-empty-background = ${colors.background-module}
+
+bar-volume-width = 11
 bar-volume-foreground-0 = ${colors.background-alt}
 bar-volume-gradient = false
 bar-volume-indicator = ﱢ
@@ -234,9 +248,10 @@ bar-volume-empty = ﱢ
 bar-volume-empty-font = 7
 bar-volume-empty-foreground = #2C292A
 
-format-volume = <label-volume> <bar-volume>
+format-volume = <label-volume><bar-volume>
+format-volume-background = ${colors.background-module}
 
-[module/pulseaudiospacer]
+[module/pulseaudios]
 type = internal/pulseaudio
 
 

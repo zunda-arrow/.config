@@ -6,10 +6,7 @@ killall -q polybar
 # polybar-msg cmd quit
 
 for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-    # MONITOR=$m polybar backdrop &
-    MONITOR=$m polybar barworkspaces &
-    MONITOR=$m polybar dateandtime &
-    MONITOR=$m polybar pulseaudio &
+    MONITOR=$m polybar backdrop &
 done
 
 

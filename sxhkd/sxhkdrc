@@ -20,7 +20,7 @@ super+shift+Print
 	maim -s | xclip -selection clipboard -t image/png
 # # Window
 super+Print
-	 maim -st 999999 | xclip -selection clipboard -t image/png
+	 .config/sxhkd/maimmonitorshot.sh
 # # Full Screen
 Print 
 	maim | xclip -selection clipboard -t image/png
