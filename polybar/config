@@ -36,10 +36,11 @@ bar-height = 21
 [bar/backdrop]
 inherit = bar/modulebar
 monitor = ${env:MONITOR:}
-background = ${colors.background}
+background = #00000000
+offset-y = 3px
 
 modules-left = s2 open ms2 bspwms bspwm ms2 close s4 open ms2 times time ms3 dates date ms2 close
-modules-right = open ms2 pulseaudios pulseaudio ms2 close s2 
+modules-right = open ms2 pulseaudios pulseaudio ms2 close s2
 
 
 [bar/modulebar]
@@ -56,7 +57,6 @@ font-7 = "Hack Nerd Font:style=Bold:size=15;3"
 
 height = ${config.bar-height}
 radius = 10px
-background = ${colors.background-module}
 override-redirect = true
 wm-restack = bspwm
 fixed-center = true

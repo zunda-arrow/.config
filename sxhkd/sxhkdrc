@@ -96,8 +96,7 @@ super + {Left,Right,Up,Down}
 		end; \
 	end
 
-# set dir {west,east,north,south}; bspc query -N @$dir && bspc node $dir -f || bspc monitor $dir -f
-
+# Move in a certain direction
 super + shift + {Left,Right,Up,Down}
 	set dir {west,east,north,south}; bspc query -N @$dir && bspc node -s $dir || bspc node -m  $dir -f
 
