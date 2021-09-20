@@ -54,7 +54,7 @@ prompt {
     normal-foreground:           var(foreground);
     alternate-urgent-foreground: var(red);
     alternate-active-foreground: var(black);
-    border-radius              : 10px;
+    border-radius              : 5px;
 }
 element {
     padding: 3px ;
@@ -113,7 +113,7 @@ element-icon {
 window {
     padding:          5;
     background-color: var(background);
-    border:           1;
+    border:           0;
 }
 mainbox {
     padding: 0;

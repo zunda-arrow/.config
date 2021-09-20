@@ -33,14 +33,15 @@ alert = #bd2c40
 [config]
 bar-height = 21
 
-[bar/backdrop]
-inherit = bar/modulebar
-monitor = ${env:MONITOR:}
-background = #00000000
-offset-y = 3px
+; [bar/backdrop]
+; inherit = bar/modulebar
+; monitor = ${env:MONITOR:}
+; background = #00000000
+; offset-y = 3px
 
-modules-left = s2 open ms2 bspwms bspwm ms2 close s4 open ms2 times time ms3 dates date ms2 close
-modules-right = open ms2 pulseaudios pulseaudio ms2 close s2
+; modules-left = s2 open ms2 times time ms3 dates date ms2 close
+; modules-center = open ms2 bspwms bspwm ms2 close
+; modules-right = s2 open ms2 pulseaudios pulseaudio ms2 close s2
 
 
 [bar/modulebar]
@@ -55,11 +56,33 @@ font-5 = "Hack Nerd Font:style=Bold:size=14;3"
 font-6 = "JetBrains Mono Nerd Font:style=Bold:size=14;3"
 font-7 = "Hack Nerd Font:style=Bold:size=15;3"
 
+background = ${colors.background-module}
+
 height = ${config.bar-height}
-radius = 10px
+radius = 5px
+offset-y = 6px
 override-redirect = true
 wm-restack = bspwm
 fixed-center = true
+
+[bar/left]
+inherit = bar/modulebar
+width = 8.8%
+offset-x = 1%
+modules-center = bspwms bspwm
+
+
+[bar/center]
+inherit = bar/modulebar
+width = 12%
+offset-x = 44%
+modules-center = times time ms2 dates date
+
+[bar/right]
+inherit = bar/modulebar
+width = 12%
+offset-x = 87%
+modules-center = pulseaudios pulseaudio
 
 [module/open]
 type = custom/text
@@ -223,7 +246,7 @@ label-volume = "  %percentage%%  "
 label-volume-foreground = ${colors.foreground}
 label-volume-background = ${colors.background-module}
 
-label-muted = " 0% %{T7}ﱢﱢﱢﱢﱢﱢﱢﱢﱢﱢﱢ%{T-}"
+label-muted = " 0% %{T7}%{T-}"
 label-muted-foreground = #2C292A
 label-muted-background = ${colors.background-module}
 
@@ -239,12 +262,12 @@ bar-volume-empty-background = ${colors.background-module}
 bar-volume-width = 11
 bar-volume-foreground-0 = ${colors.background-alt}
 bar-volume-gradient = false
-bar-volume-indicator = ﱢ
+bar-volume-indicator = 
 bar-volume-indicator-font = 7
 bar-volume-indicator-foreground = ${colors.background-alt}
-bar-volume-fill = ﱢ
+bar-volume-fill = 
 bar-volume-fill-font = 7
-bar-volume-empty = ﱢ
+bar-volume-empty = 
 bar-volume-empty-font = 7
 bar-volume-empty-foreground = #2C292A
 
