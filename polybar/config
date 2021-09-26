@@ -25,16 +25,19 @@
 #7297A6
 #E7F5F9
 
+# Dark Blue
+#5065F4
+
 [colors]
-;background = ${xrdb:color0:#222}
-background = #002C2527
-; background-alt = #00E7F5F9
-background-module = #99E7F5F9
+#background = ${xrdb:color0:#222}
+background = #662C2527
+;background-alt = #007297A6
+background-module = #66E7F5F9
 ;foreground = ${xrdb:color7:#222}
 foreground = #000
 foreground-alt = #000
-primary = #5B6ED9
-secondary = #5B6ED9
+primary = #5065F4
+secondary = #5064f4
 underline = #D984AC
 background-light = #D984AC
 alert = #bd2c40
@@ -68,32 +71,37 @@ font-7 = "Hack Nerd Font:style=Bold:size=15;5"
 background = ${colors.background-module}
 
 height = ${config.bar-height}
-radius = 5px
+radius = 0px
 offset-y = 0px
 override-redirect = true
 wm-restack = bspwm
 fixed-center = true
 
-; [bar/left]
-; inherit = bar/modulebar
-; width = 8.8%
-; offset-x = 7px
-; modules-center = bspwms bspwm
+bottom = true
+
+;[bar/left]
+;inherit = bar/modulebar
+;width = 8.8%
+;offset-x = 7px
+;modules-center = bspwms bspwm
 
 
 [bar/center]
 inherit = bar/modulebar
-width = 99.3%
-offset-x = 0.35%
-modules-left = s4 bspwms bspwm
-modules-center = times time ms2 dates date
-modules-right = pulseaudios pulseaudio s4
+;width = 99.3%
+;offset-x = 0.35%
+modules-right = s2 pulseaudios pulseaudio s2
+modules-center = bspwms bspwm
+modules-left = arch s4 dates date times time
 
-; [bar/right]
-; inherit = bar/modulebar
-; width = 12%
-; offset-x = 1683px
-; modules-center = pulseaudios pulseaudio
+;modules-center = dates date times time s32 bspwms bspwm s32 pulseaudios pulseaudio
+
+
+;[bar/right]
+;inherit = bar/modulebar
+;width = 14%
+;offset-x = 1645px
+;modules-center = times time dates date ms2 pulseaudios pulseaudio
 
 [module/open]
 type = custom/text
@@ -153,6 +161,23 @@ content = "   "
 [module/s4]
 type = custom/text
 content = "    "
+
+[module/s8]
+type = custom/text
+content = "        "
+
+[module/s32]
+type = custom/text
+content = "                                "
+
+[module/arch]
+type = custom/text
+content = "%{T8}%{T-}"
+content-foreground = ${colors.module-background}
+content-background = ${colors.secondary}
+content-padding = 2
+
+click-left = "rofi -show combi"
 
 [module/times]
 type = custom/text
