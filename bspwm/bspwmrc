@@ -1,19 +1,38 @@
-#! /bin/sh
+#! /bin/fish
 
-~/.screenlayout/tripple.sh
-picom --experimental-backends &
+#picom --experimental-backends &
+picom &
 nitrogen --restore &
 lxqt-policykit-agent &
-nm-applet &
+#nm-applet &
 
+# Set DPI
+xrandr --dpi 192 || true
+
+# libinput
+
+set id (xinput --list | grep "Touchpad" | awk -F[=] '{print $2}' | awk -F[\t] '{print $1}')
+
+xinput --set-prop $id "libinput Natural Scrolling Enabled" 1
+xinput --set-prop $id "libinput Tapping Enabled" 1
+xinput --set-prop  $id 'libinput Disable While Typing Enabled' 0
+
+#Wallpapers
+#./launch_wallpaper ~/.config/wallpaper/very_lewd.toml
+#./launch_wallpaper
+
+# Scrolling
+libinput-gestures-setup start
 
 #Start polybar
-~/.config/polybar/launch.sh
+~/.config/polybar/launch.sh &
 #Get rid of gaps
-bspc config top_padding 2
+bspc config top_padding 34
 bspc config right_padding 2
 bspc config left_padding 2
-bspc config bottom_padding 27
+bspc config bottom_padding 2
+
+bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9 0
 
 #Mouse warping
 bspc config pointer_follows_monitor true
@@ -21,11 +40,7 @@ bspc config pointer_follows_focus true
 
 pgrep -x sxhkd > /dev/null || sxhkd &
 
-bspc monitor HDMI-0 -d 1 2 3 4
-bspc monitor HDMI-1-1 -d 5 6 7 8
-bspc monitor DP-4  -d 9 10 11 12
-
-bspc config border_width         2
+bspc config border_width         3
 bspc config border_radius        0
 bspc config window_gap           3
 
@@ -38,8 +53,7 @@ bspc config normal_border_color \#364959
 bspc config active_border_color \#364959
 bspc config presel_feedback_color \#364959
 
-
-bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Game desktop='^8' state=floating follow=on
 bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on

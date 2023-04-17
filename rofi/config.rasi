@@ -24,17 +24,17 @@ prompt {
 
 * {
     red:                         #5B6ED9;
-    black:                       rgba ( 0, 43, 54, 100 % );
-    white:                       rgba ( 255, 255, 255, 100%);
-    cream:                       #E7F5F9;
-    selected-active-foreground:  var(background);
+    black:                       #2C292A;
+    white:                       #DCDCDC;
+    cream:                       #FFFFFF;
+    selected-active-foreground:  var(white);
     lightfg:                     var(red);
     separatorcolor:              var(foreground);
     urgent-foreground:           var(red);
     alternate-urgent-background: var(lightbg);
     lightbg:                     rgba ( 0, 0, 0, 0 % );
     background-color:            rgba ( 0, 0, 0, 0 % );
-    border-color:                var(foreground);
+    border-color:                var(red);
     normal-background:           var(background);
     selected-urgent-background:  var(red);
     alternate-active-background: var(lightbg);
@@ -43,18 +43,18 @@ prompt {
     alternate-normal-foreground: var(foreground);
     urgent-background:           var(background);
     selected-normal-foreground:  var(cream);
-    active-foreground:           var(black);
-    background:                  var(cream);
+    active-foreground:           var(white);
+    background:                  var(black);
     selected-active-background:  var(red);
     active-background:           var(background);
     selected-normal-background:  var(lightfg);
     alternate-normal-background: var(lightbg);
-    foreground:                  var(black);
-    selected-urgent-foreground:  rgba ( 0, 0 , 0, 100%);
+    foreground:                  var(white);
+    selected-urgent-foreground:  var(black);
     normal-foreground:           var(foreground);
     alternate-urgent-foreground: var(red);
     alternate-active-foreground: var(black);
-    border-radius              : 5px;
+//    border-radius              : 5px;
 }
 element {
     padding: 3px ;
