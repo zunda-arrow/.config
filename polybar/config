@@ -47,13 +47,13 @@ bar-height = 32
 monitor = ${env:MONITOR:}
 
 ;font-0 = fixed:pixelsize=18;3
-font-0 = "Comic Mono:pixelsize=18;5"
+font-0 = "Comic Sans Ms:pixelsize=18;4"
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;2
 font-3 = "Hack Nerd Font:style=Bold:size=10;2"
 font-4 = "Hack Nerd Font:style=Bold:size=13;2"
 font-5 = "Hack Nerd Font:style=Bold:size=19;4"
-font-6 = "JetBrains Mono Nerd Font:style=Bold:size=14;5"
+font-6 = "Hack Mono Nerd Font:style=Bold:size=14;6"
 font-7 = "Hack Nerd Font:style=Bold:size=13;3"
 
 background = ${colors.background}
@@ -299,12 +299,12 @@ label = " %date% "
 [module/pulseaudio]
 type = internal/pulseaudio
 
-label-muted = %{T6}󰸈%{T-} muted
+label-muted = %{T6}󰸈%{T-}  muted
 label-muted-foreground = ${colors.foreground}
 label-muted-background = ${colors.background-alt}
 label-muted-padding = 1
 
-format-volume = <ramp-volume> <label-volume>
+format-volume = <ramp-volume>  <label-volume>
 format-volume-foreground = ${colors.foreground}
 format-volume-background = ${colors.background-alt}
 format-volume-padding = 1
@@ -321,7 +321,7 @@ enable-scroll = false
 use-actual-brightness = true
 card = intel_backlight
 format = <label>
-label = %{T6}%{T-} %percentage%%
+label = %{T6}%{T-}  %percentage%%
 
 [settings]
 screenchange-reload = true
