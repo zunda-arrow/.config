@@ -7,10 +7,10 @@
 configuration {
 
     display-drun:  "";
-    display-window:  "workspace";
+    display-window:  " workspace";
 
     show-icons: true;
-    font: "Open Sans 12";
+    font: "Comic Mono 15";
     terminal: "alacritty";
     columns: 3;
     drun-display-format : "{name}";
@@ -23,9 +23,9 @@ prompt {
 
 
 * {
-    red:                         #5B6ED9;
-    black:                       #2C292A;
-    white:                       #DCDCDC;
+    red:                         #FFFFFF;
+    black:                       #FFFFFF;
+    white:                       #000000;
     cream:                       #FFFFFF;
     selected-active-foreground:  var(white);
     lightfg:                     var(red);
@@ -34,7 +34,7 @@ prompt {
     alternate-urgent-background: var(lightbg);
     lightbg:                     rgba ( 0, 0, 0, 0 % );
     background-color:            rgba ( 0, 0, 0, 0 % );
-    border-color:                var(red);
+    border-color:                var(white);
     normal-background:           var(background);
     selected-urgent-background:  var(red);
     alternate-active-background: var(lightbg);
@@ -42,7 +42,7 @@ prompt {
     blue:                        rgba ( 38, 139, 210, 100 % );
     alternate-normal-foreground: var(foreground);
     urgent-background:           var(background);
-    selected-normal-foreground:  var(cream);
+    selected-normal-foreground:  var(white);
     active-foreground:           var(white);
     background:                  var(black);
     selected-active-background:  var(red);
@@ -54,13 +54,12 @@ prompt {
     normal-foreground:           var(foreground);
     alternate-urgent-foreground: var(red);
     alternate-active-foreground: var(black);
-//    border-radius              : 5px;
+  border-radius              : 5px;
 }
 element {
-    padding: 3px ;
+    padding: 7px ;
     cursor:  pointer;
-    spacing: 5px ;
-    border:  0px;
+    spacing: 10px ;
 }
 element normal.normal {
     background-color: var(normal-background);
@@ -74,9 +73,12 @@ element normal.active {
     background-color: var(active-background);
     text-color:       var(active-foreground);
 }
-element selected.normal {
-    background-color: var(selected-normal-background);
+element selected {
+    // background-color: var(selected-normal-background);
     text-color:       var(selected-normal-foreground);
+    border-color: var(white);
+    border-radius: 5px;
+    border: 3px dash;
 }
 element selected.urgent {
     background-color: var(selected-urgent-background);
@@ -113,7 +115,7 @@ element-icon {
 window {
     padding:          5;
     background-color: var(background);
-    border:           2;
+    border:           3;
 }
 mainbox {
     padding: 0;
@@ -157,16 +159,16 @@ button selected {
 }
 num-filtered-rows {
     expand:     false;
-    text-color: rgba ( 128, 128, 128, 100 % );
+    text-color: rgba ( 0, 0, 0, 100 % );
 }
 num-rows {
     expand:     false;
-    text-color: rgba ( 128, 128, 128, 100 % );
+    text-color: rgba ( 0, 0, 0, 100 % );
 }
 textbox-num-sep {
     expand:     false;
     str:        "/";
-    text-color: rgba ( 128, 128, 128, 100 % );
+    text-color: rgba ( 0, 0, 0, 100 % );
 }
 inputbar {
     padding:    1px ;
@@ -182,7 +184,7 @@ entry {
     text-color:        var(normal-foreground);
     cursor:            text;
     spacing:           0;
-    placeholder-color: rgba ( 128, 128, 128, 100 % );
+    placeholder-color: rgba ( 0, 0, 0, 100% );
     placeholder:       "Search...";
 }
 prompt {

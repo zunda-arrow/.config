@@ -8,11 +8,13 @@ super + shift + Return
 
 # program launcher
 super + slash
-	export GDK_SCALE=2; ecport QT_AUTO_SCREEN_SCALE_FACTOR=2; rofi -show combi;
-
-#calculator
-super + period
-	rofi -show calc -modi calc -no-show-match -no-sort
+	if [ $IS_DESKTOP = true ]; \
+		echo "LETS GO" \
+	else; \
+		export GTK_SCALE=2; \
+		export QT_AUTO_SCREEN_SCALE_FACTOR=2; \
+	end; \
+	rofi -show combi;
 
 # Maim Screenshots
 # Select
@@ -26,6 +28,10 @@ Shift + Print
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
+
+# Polybar show and hide
+super + f
+	~/.config/sxhkd/polybar-hide
 
 #Volume
 XF86AudioLowerVolume
@@ -74,8 +80,8 @@ super + Return
 #
 
 # set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,~pseudo_tiled,~floating,~fullscreen}
+super + {t,shift + t,s}
+	bspc node -t {tiled,~pseudo_tiled,~floating}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
@@ -87,24 +93,28 @@ super + ctrl + {m,x,y,z}
 
 
 # focus the node in the given direction
-super + {Left,Right,Up,Down}
-	set dir {west,east,north,south}; \
-	if [ (bspc query -N -d $desk -n .leaf | wc -l) = 0 ]; \
-		bspc monitor $dir -f; \
-	else; \
-		bspc query -N @$dir; \
-		if [ $status = 1 ]; \
-			echo $dir; \
-			bspc monitor $dir -f; \
-		else; \
-			echo "not 1"; \
-			bspc node $dir -f; \
-		end; \
-	end
+super + {Left,j,Right,semicolon,Up,k,Down,l}
+    bspc config pointer_follows_focus true; \
+    set dir {west,west,east,east,north,north,south,south}; \
+    if [ (bspc query -N -d $desk -n .leaf | wc -l) = 0 ]; \
+        bspc monitor $dir -f; \
+    else; \
+        bspc query -N @$dir; \
+        if [ $status = 1 ]; \
+            echo $dir; \
+            bspc monitor $dir -f; \
+        else; \
+            echo "not 1"; \
+            bspc node $dir -f; \
+        end; \
+    end; \
+    bspc config pointer_follows_focus false
 
 # Move in a certain direction
-super + shift + {Left,Right,Up,Down}
-	set dir {west,east,north,south}; bspc query -N @$dir && bspc node -s $dir || bspc node -m  $dir -f
+super + shift + {Left,j,Right,semicolon,Up,k,Down,l}
+    bspc config pointer_follows_focus true; \
+    set dir {west,west,east,east,north,north,south,south}; bspc query -N @$dir && bspc node -s $dir || bspc node -m  $dir -f; \
+    bspc config pointer_follows_focus false
 
 # Rotate tree
 super + shift + {d,a}
