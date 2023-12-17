@@ -12,11 +12,11 @@ kmonad ~/.config/kmonad/layout.kbd &
 pkill fcitx
 fcitx &
 
-if [ $IS_DESKTOP = "true" ]
-    ./.screenlayout/desktop.sh &
-else
-# Set DPI
+if [ -n $IS_DESKTOP ]
+    # Set DPI
     xrandr --dpi 192 || true
+else
+    ./.screenlayout/desktop.sh &
 end
 
 nitrogen --restore &

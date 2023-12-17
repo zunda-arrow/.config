@@ -8,11 +8,11 @@ super + shift + Return
 
 # program launcher
 super + slash
-	if [ $IS_DESKTOP = true ]; \
-		echo "LETS GO" \
-	else; \
-		export GTK_SCALE=2; \
+	if [ -n $IS_DESKTOP ]; \
+		export GDK_SCALE=2; \
 		export QT_AUTO_SCREEN_SCALE_FACTOR=2; \
+	else; \
+		echo "HERE"; \
 	end; \
 	rofi -show combi;
 
