@@ -14,7 +14,9 @@ pkill picom
 pkill fcitx
 fcitx &
 
-if [ -n IS_DESKTOP ]
+./setup_wallpaper
+
+if [ -n "$IS_DESKTOP" ]
     # Set DPI
     xrandr --dpi 192 || true
     picom --experimental-backends &
@@ -61,8 +63,6 @@ else
     bspc config presel_feedback_color \#000000
 end
 
-./setup_wallpaper
-
 # libinput
 
 set id (xinput --list | grep "Touchpad" | awk -F[=] '{print $2}' | awk -F[\t] '{print $1}')
@@ -94,6 +94,7 @@ bspc config gapless_monocle      true
 #bspc config presel_feedback_color \#364959
 
 bspc rule -a Game desktop='^8' state=floating follow=on
+bspc rule -a XIVLauncher.Core state=floating center
 bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on

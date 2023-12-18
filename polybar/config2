@@ -58,6 +58,7 @@ font-4 = "Hack Nerd Font:style=Bold:size=13;2"
 font-5 = "Hack Nerd Font:style=Bold:size=14;3"
 font-6 = "JetBrains Mono Nerd Font:style=Bold:size=14;3"
 font-7 = "Hack Nerd Font:style=Bold:size=15;3"
+font-8 = "Hack Nerd Font:style=Bold:size=12;2"
 
 background = ${colors.background-module}
 
@@ -162,7 +163,7 @@ content-padding = 1
 
 [module/bspwms]
 type = custom/text
-content = "%{T6}舘%{T-}"
+content = "%{T6} %{T-}"
 content-foreground = ${colors.secondary}
 content-background = ${colors.background-alt}
 content-padding = 1
@@ -196,24 +197,24 @@ label-unmounted-foreground = ${colors.foreground-alt}
 [module/bspwm]
 type = internal/bspwm
 
-label-focused = 
+label-focused = %{T9}󰫢%{T-}
 label-focused-background = ${colors.background-module}
 label-focused-foreground = ${colors.secondary}
 label-focused-padding = 2
 
-label-occupied = 
+label-occupied = %{T9}󰫣%{T-}
 label-occupied-background = ${colors.background-module}
 label-occupied-foreground = ${colors.secondary}
 label-occupied-padding = 2
 
-label-urgent = 
+label-urgent = %{T9}󰫣%{T-}
 label-urgent-background = ${colors.background-module}
 label-urgent-foreground = ${colors.secondary}
 label-urgent-padding = 2
 
-label-empty = 
+label-empty = %{T9}󰫣%{T-}
 label-empty-background = ${colors.background-module}
-label-empty-foreground = #364959
+label-empty-foreground = ${colors.background-module}
 label-empty-padding = 2
 
 pin-workspaces = true
