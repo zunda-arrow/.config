@@ -3,25 +3,23 @@
 #picom --experimental-backends &
 #picom &
 lxqt-policykit-agent &
-dunst &
 # nm-applet &
 
 pkill kmonad
 kmonad ~/.config/kmonad/layout.kbd &
 
 pkill picom
+pkill dunst
 
 pkill fcitx
 fcitx &
 
-./setup_wallpaper
-
 if [ -n "$IS_DESKTOP" ]
+    dunst -config "~/.config/dunst/desktoprc" &
     # Set DPI
-    xrandr --dpi 192 || true
+    ./.screenlayout/desktop.sh
     picom --experimental-backends &
     ~/.config/polybar/launch.sh "/home/lunar/.config/polybar/config2" &
-    ./.screenlayout/desktop.sh &
     kmonad ~/.config/kmonad/layout-2.kbd &
 
     bspc config top_padding 24
@@ -42,6 +40,7 @@ if [ -n "$IS_DESKTOP" ]
     bspc config active_border_color \#030311
     bspc config presel_feedback_color \#030311
 else
+    dunst &
     xrandr --dpi 192 || true
     #Start polybar
     ~/.config/polybar/launch.sh "/home/lunar/.config/polybar/config" &
@@ -63,8 +62,9 @@ else
     bspc config presel_feedback_color \#000000
 end
 
-# libinput
+./setup_wallpaper
 
+# libinput
 set id (xinput --list | grep "Touchpad" | awk -F[=] '{print $2}' | awk -F[\t] '{print $1}')
 
 xinput --set-prop $id "libinput Natural Scrolling Enabled" 1
