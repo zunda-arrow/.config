@@ -9,17 +9,41 @@ dunst &
 pkill kmonad
 kmonad ~/.config/kmonad/layout.kbd &
 
+pkill picom
+
 pkill fcitx
 fcitx &
 
-if [ -n $IS_DESKTOP ]
+if [ -n IS_DESKTOP ]
     # Set DPI
     xrandr --dpi 192 || true
-else
+    picom --experimental-backends &
+    ~/.config/polybar/launch.sh "/home/lunar/.config/polybar/config2" &
     ./.screenlayout/desktop.sh &
+    kmonad ~/.config/kmonad/layout-2.kbd &
+
+    bspc config top_padding 22
+    bspc config right_padding 2
+    bspc config left_padding 2
+    bspc config bottom_padding 2
+
+    bspc monitor DP-4 -d 1 2 3 4 5 6
+    bspc monitor DP-1-4 -d 7 8 9 10 11 12
+    bspc monitor eDP-1-1 -d 13 14 15 16 17 18
+else
+    xrandr --dpi 192 || true
+    #Start polybar
+    ~/.config/polybar/launch.sh "/home/lunar/.config/polybar/config" &
+    #Get rid of gaps
+    bspc config top_padding 34
+    bspc config right_padding 2
+    bspc config left_padding 2
+    bspc config bottom_padding 2
+
+    bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9 0
 end
 
-nitrogen --restore &
+./setup_wallpaper
 
 # libinput
 
@@ -30,21 +54,11 @@ xinput --set-prop $id "libinput Tapping Enabled" 1
 xinput --set-prop  $id 'libinput Disable While Typing Enabled' 0
 
 #Wallpapers
-#./launch_wallpaper ~/.config/wallpaper/very_lewd.toml
-#./launch_wallpaper
+# ./launch_wallpaper ~/.config/wallpaper/very_lewd.toml
+# ./launch_wallpaper
 
 # Scrolling
 libinput-gestures-setup start
-
-#Start polybar
-~/.config/polybar/launch.sh &
-#Get rid of gaps
-bspc config top_padding 34
-bspc config right_padding 2
-bspc config left_padding 2
-bspc config bottom_padding 2
-
-bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9 0
 
 #Mouse warping
 bspc config pointer_follows_monitor true

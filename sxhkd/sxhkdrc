@@ -4,15 +4,21 @@
 
 # terminal emulator
 super + shift + Return
-	alacritty
+	if [ -n IS_DESKTOP ]; \
+		export WINIT_X11_SCALE_FACTOR=1; \
+		alacritty --config-file "/home/lunar/.config/alacritty/desktop-alacritty.yml"; \
+	else; \
+		alacritty; \
+	end;
 
 # program launcher
 super + slash
-	if [ -n $IS_DESKTOP ]; \
+	if [ -n IS_DESKTOP ]; \
+		export GDK_SCALE=1; \
+		export QT_AUTO_SCREEN_SCALE_FACTOR=1; \
+	else; \
 		export GDK_SCALE=2; \
 		export QT_AUTO_SCREEN_SCALE_FACTOR=2; \
-	else; \
-		echo "HERE"; \
 	end; \
 	rofi -show combi;
 

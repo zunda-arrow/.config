@@ -19,25 +19,19 @@
 
 #COLOR SCHEME
 
-#7A7EBF
-#5B6ED9
-#364959
-#7297A6
-#E7F5F9
-
 [colors]
 ;background = ${xrdb:color0:#222}
-background = #2C2527
-background-alt = #E7F5F9
-background-module = #E7F5F9
+background = #030311
+background-alt = #030311
+background-module = #030311
 ;foreground = ${xrdb:color7:#222}
-foreground = #000
-foreground-alt = #000
-primary = #5B6ED9
-secondary = #5B6ED9
-underline = #D984AC
-background-light = #D984AC
-alert = #bd2c40
+foreground = #cccccc
+foreground-alt = #cccccc
+primary = #3496f7
+secondary = #3496f7
+underline = #cccccc
+background-light = #cccccc
+alert = #222222
 
 [config]
 bar-height = 21
@@ -69,7 +63,7 @@ background = ${colors.background-module}
 
 height = ${config.bar-height}
 radius = 5px
-offset-y = 6px
+offset-y = 2px
 override-redirect = true
 wm-restack = bspwm
 fixed-center = true
@@ -83,14 +77,14 @@ modules-center = bspwms bspwm
 
 [bar/center]
 inherit = bar/modulebar
-width = 12%
-offset-x = 44%
+width = 10%
+offset-x = 46%
 modules-center = times time ms2 dates date
 
 [bar/right]
 inherit = bar/modulebar
-width = 12%
-offset-x = 87%
+width = 4%
+offset-x = 95%
 modules-center = pulseaudios pulseaudio
 
 [module/open]
@@ -255,8 +249,8 @@ label-volume = "  %percentage%%  "
 label-volume-foreground = ${colors.foreground}
 label-volume-background = ${colors.background-module}
 
-label-muted = " 0% %{T7}%{T-}"
-label-muted-foreground = #2C292A
+label-muted = " 0% %{T7}%{T-}"
+label-muted-foreground = ${colors.foreground}
 label-muted-background = ${colors.background-module}
 
 ; label-content = "%{T6}<ramp-volume>%{T-}"
@@ -280,7 +274,7 @@ bar-volume-empty = 
 bar-volume-empty-font = 7
 bar-volume-empty-foreground = #2C292A
 
-format-volume = <label-volume><bar-volume>
+format-volume = <label-volume>
 format-volume-background = ${colors.background-module}
 
 [module/pulseaudios]

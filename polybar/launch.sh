@@ -6,11 +6,10 @@ killall -q polybar
 # polybar-msg cmd quit
 
 for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-    MONITOR=$m polybar backdrop &
-    MONITOR=$m polybar left &
-    MONITOR=$m polybar center &
-    MONITOR=$m polybar right &
+    MONITOR=$m polybar --config=$1 backdrop &
+    MONITOR=$m polybar --config=$1 left &
+    MONITOR=$m polybar --config=$1 center &
+    MONITOR=$m polybar --config=$1 right &
 done
-
 
 echo "Bars launched..."
