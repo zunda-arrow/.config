@@ -50,7 +50,7 @@ bar-height = 21
 [bar/modulebar]
 monitor = ${env:MONITOR:}
 
-font-0 = fixed:pixelsize=10;2
+font-0 = "Noto Sans CJK JP:size=10;2"
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;2
 font-3 = "Hack Nerd Font:style=Bold:size=10;2"
@@ -80,13 +80,13 @@ modules-center = bspwms bspwm
 inherit = bar/modulebar
 width = 10%
 offset-x = 46%
-modules-center = times time ms2 dates date
+modules-center = date
 
 [bar/right]
 inherit = bar/modulebar
 width = 4%
 offset-x = 95%
-modules-center = pulseaudios pulseaudio
+modules-center = pulseaudio
 
 [module/open]
 type = custom/text
@@ -219,7 +219,7 @@ interval = 5
 date =
 # date-alt = " %Y-%m-%d"
 
-time = %I:%M
+time = "時%I分%M"
 # time-alt = %H:%M:%S
 
 format-prefix = 
@@ -233,17 +233,20 @@ label = " %time% "
 [module/date]
 inherit = module/time
 interval = 5
-date = "%Y-%m-%d"
-label = " %date% "
+date = "%Y%{T10}年%{T-}%m%{T10}月%{T-}%d%{T10}日%{T-}"
+
+time = "%I%{T10}時%{T-}%M%{T10}分%{T-}"
+
+label = "%date%%time%"
 
 [module/pulseaudio]
 type = internal/pulseaudio
 
-label-volume = "  %percentage%%  "
+label-volume = "%percentage%%音量"
 label-volume-foreground = ${colors.foreground}
 label-volume-background = ${colors.background-module}
 
-label-muted = " 0% %{T7}%{T-}"
+label-muted = "0%音量"
 label-muted-foreground = ${colors.foreground}
 label-muted-background = ${colors.background-module}
 
