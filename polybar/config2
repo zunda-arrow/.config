@@ -43,7 +43,7 @@ bar-height = 21
 ; offset-y = 3px
 
 ; modules-left = s2 open ms2 times time ms3 dates date ms2 close
-; modules-center = open ms2 bspwms bspwm ms2 close
+; modules-center = open bspwms bspwm close
 ; modules-right = s2 open ms2 pulseaudios pulseaudio ms2 close s2
 
 
@@ -149,22 +149,15 @@ content = "    "
 
 [module/times]
 type = custom/text
-content = "%{T6}%{T-}"
+content = "%{T6}%{T-} "
 content-foreground = ${colors.secondary}
 content-background = ${colors.background-alt}
 content-padding = 1
 
 [module/dates]
 type = custom/text
-content = "%{T6}%{T-}"
+content = "%{T6}%{T-} "
 content-foreground = ${colors.primary}
-content-background = ${colors.background-alt}
-content-padding = 1
-
-[module/bspwms]
-type = custom/text
-content = "%{T6} %{T-}"
-content-foreground = ${colors.secondary}
 content-background = ${colors.background-alt}
 content-padding = 1
 
@@ -197,22 +190,22 @@ label-unmounted-foreground = ${colors.foreground-alt}
 [module/bspwm]
 type = internal/bspwm
 
-label-focused = %{T9}󰫢%{T-}
+label-focused = %{T9}%{T-}
 label-focused-background = ${colors.background-module}
 label-focused-foreground = ${colors.secondary}
 label-focused-padding = 2
 
-label-occupied = %{T9}󰫣%{T-}
+label-occupied = %{T9}%{T-}
 label-occupied-background = ${colors.background-module}
 label-occupied-foreground = ${colors.secondary}
 label-occupied-padding = 2
 
-label-urgent = %{T9}󰫣%{T-}
+label-urgent = %{T9}%{T-}
 label-urgent-background = ${colors.background-module}
 label-urgent-foreground = ${colors.secondary}
 label-urgent-padding = 2
 
-label-empty = %{T9}󰫣%{T-}
+label-empty = %{T9}%{T-}
 label-empty-background = ${colors.background-module}
 label-empty-foreground = ${colors.background-module}
 label-empty-padding = 2
