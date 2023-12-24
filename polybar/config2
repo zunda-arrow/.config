@@ -27,25 +27,14 @@ background-module = #030311
 ;foreground = ${xrdb:color7:#222}
 foreground = #cccccc
 foreground-alt = #cccccc
-primary = #3496f7
-secondary = #3496f7
+primary = #cccccc
+secondary = #cccccc
 underline = #cccccc
 background-light = #cccccc
 alert = #222222
 
 [config]
 bar-height = 21
-
-; [bar/backdrop]
-; inherit = bar/modulebar
-; monitor = ${env:MONITOR:}
-; background = #00000000
-; offset-y = 3px
-
-; modules-left = s2 open ms2 times time ms3 dates date ms2 close
-; modules-center = open bspwms bspwm close
-; modules-right = s2 open ms2 pulseaudios pulseaudio ms2 close s2
-
 
 [bar/modulebar]
 monitor = ${env:MONITOR:}
@@ -69,11 +58,17 @@ override-redirect = true
 wm-restack = bspwm
 fixed-center = true
 
+[bar/left-left]
+inherit = bar/modulebar
+width = 2.3%
+offset-x = .5%
+modules-center = suspend-label s1
+
 [bar/left]
 inherit = bar/modulebar
-width = 8.8%
-offset-x = 1%
-modules-center = bspwms bspwm
+width = 8.1%
+offset-x = 3.2%
+modules-center = bspwm s1
 
 
 [bar/center]
@@ -288,6 +283,9 @@ format-volume-foreground = ${colors.primary}
 format-volume-background = ${colors.background-alt}
 format-volume-padding = 1
 
+[module/suspend-label]
+type = custom/text
+content = "%{T9}%{T-}"
 
 [settings]
 screenchange-reload = true

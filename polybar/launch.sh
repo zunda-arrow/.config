@@ -7,6 +7,7 @@ killall -q polybar
 
 for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
     MONITOR=$m polybar --config=$1 backdrop &
+    MONITOR=$m polybar --config=$1 left-left &
     MONITOR=$m polybar --config=$1 left &
     MONITOR=$m polybar --config=$1 center &
     MONITOR=$m polybar --config=$1 right &
