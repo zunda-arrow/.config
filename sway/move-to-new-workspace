@@ -1,0 +1,3 @@
+#!/bin/fish
+
+swaymsg move container to workspace number (date +%s). 

@@ -5,7 +5,6 @@
 # terminal emulator
 super + shift + Return
 	if [ -n "$IS_DESKTOP" ]; \
-		export WINIT_X11_SCALE_FACTOR=1; \
 		alacritty --config-file "/home/lunar/.config/alacritty/desktop-alacritty.yml"; \
 	else; \
 		alacritty; \
@@ -36,9 +35,9 @@ Shift + Print
 super + Escape
 	pkill -USR1 -x sxhkd
 
-# Polybar show and hide
+# Fullscreen
 super + f
-	~/.config/sxhkd/polybar-hide
+	bspc node -t ~fullscreen
 
 #Volume
 XF86AudioLowerVolume

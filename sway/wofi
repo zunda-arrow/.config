@@ -1,0 +1,31 @@
+#!/bin/env python
+
+import subprocess
+
+GOTO_PREFIX = "GOTO: "
+
+# Get path
+path1 = subprocess.run(
+    f"""swaymsg -t get_tree |
+         jq  -r  '.nodes[].nodes[]  |  if  .nodes  then  [recurse(.nodes[])]  else   []   end   +
+       .floating_nodes | .[] | select(.nodes==[]) | ("{GOTO_PREFIX}" + (.id | tostring) + " " + .name)'""",
+    shell=True,
+    capture_output=True,
+).stdout.decode("utf8")
+path2 = subprocess.run("dmenu_path", capture_output=True).stdout.decode('utf8')
+
+
+paths = f"{path1}\n{path2}"
+
+
+res = subprocess.run(
+    f'echo "{paths}" | fuzzel -d', shell=True, capture_output=True
+).stdout.decode("utf8")
+
+if res.startswith(GOTO_PREFIX):
+    id = res.strip(GOTO_PREFIX).split(" ")[0].strip()
+    subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
+elif res.strip() in path2:
+    subprocess.run(["xargs", "swaymsg", "exec"], input=res.encode("utf8"))
+else:
+    subprocess.run([res.strip()])

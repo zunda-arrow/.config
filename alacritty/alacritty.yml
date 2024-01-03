@@ -150,7 +150,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 7.5
+  size: 12
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -359,7 +359,7 @@ colors:
 # The value `0.0` is completely transparent and `1.0` is opaque.
 
 window:
-  opacity: 0.97  # value range is 0 ~ 1
+  opacity: 0.85  # value range is 0 ~ 1
 
 #selection:
   # This string contains all characters that are used as separators for

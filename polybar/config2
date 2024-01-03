@@ -80,7 +80,7 @@ modules-center = date
 [bar/right]
 inherit = bar/modulebar
 width = 4%
-offset-x = 95%
+offset-x = 95.5%
 modules-center = pulseaudio
 
 [module/open]
@@ -237,55 +237,26 @@ label = "%date%%time%"
 [module/pulseaudio]
 type = internal/pulseaudio
 
-label-volume = "%percentage%%音量"
-label-volume-foreground = ${colors.foreground}
-label-volume-background = ${colors.background-module}
-
-label-muted = "0%音量"
+label-muted = %{T6}󰸈%{T-}  0%
 label-muted-foreground = ${colors.foreground}
-label-muted-background = ${colors.background-module}
-
-; label-content = "%{T6}<ramp-volume>%{T-}"
-ramp-volume-foreground = ${colors.background-light}
-ramp-volume-background = ${colors.background-alt}
-ramp-volume-padding = 1
-
-bar-volume-indicator-background = ${colors.background-module}
-bar-volume-fill-background = ${colors.background-module}
-bar-volume-empty-background = ${colors.background-module}
-
-bar-volume-width = 11
-bar-volume-foreground-0 = ${colors.background-alt}
-bar-volume-gradient = false
-bar-volume-indicator = 
-bar-volume-indicator-font = 7
-bar-volume-indicator-foreground = ${colors.background-alt}
-bar-volume-fill = 
-bar-volume-fill-font = 7
-bar-volume-empty = 
-bar-volume-empty-font = 7
-bar-volume-empty-foreground = #2C292A
-
-format-volume = <label-volume>
-format-volume-background = ${colors.background-module}
-
-[module/pulseaudios]
-type = internal/pulseaudio
-
-
-label-muted = "%{T6}遼%{T-}"
-label-muted-foreground = ${colors.primary}
 label-muted-background = ${colors.background-alt}
 label-muted-padding = 1
 
-format-volume = "%{T6}蓼%{T-}"
-format-volume-foreground = ${colors.primary}
+format-volume = <ramp-volume>  <label-volume>
+format-volume-foreground = ${colors.foreground}
 format-volume-background = ${colors.background-alt}
 format-volume-padding = 1
+
+ramp-volume-0 = %{T6}%{T-}
+ramp-volume-1 = %{T6}󰖀%{T-}
+ramp-volume-2 = %{T6}󰕾%{T-}
+
+label-volume = "%percentage%%"
 
 [module/suspend-label]
 type = custom/text
 content = "%{T9}%{T-}"
+click-left = slock
 
 [settings]
 screenchange-reload = true
