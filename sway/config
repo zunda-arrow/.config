@@ -28,7 +28,7 @@ default_border pixel
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
-output eDP-1 bg /home/lunar/Wallpaper/sakura/wallhaven-0qxwed.jpg fill
+# output eDP-1 bg /home/lunar/Wallpaper/sakura/wallhaven-0qxwed.jpg fill
 gaps outer 2
 gaps inner 2
 
@@ -36,8 +36,8 @@ gaps inner 2
 # Example configuration:
 #
 output DP-2 resolution 1920x1080 position 0,0
-output DP-4 resolution 3840x2160 position 1920,0 scale 2
-output eDP-1 resolution 1920x1080 position 3840,0 scale 2
+output DP-4 resolution 3840x2160 position 1920,0 scale 1.8
+output eDP-1 resolution 1920x1080 position 5376,0 scale 1.6
 
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs

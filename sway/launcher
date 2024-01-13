@@ -3,6 +3,7 @@
 import os
 import subprocess
 import dataclasses
+import shlex
 
 from desktop_parser import DesktopFile
 
@@ -105,7 +106,8 @@ elif res.strip() in path2:
     for x in reversed(apps):
         if res.strip() in x.name:    
             cmd = x.exec.replace("%u", "").replace("%U", "")
-            print(cmd)
-            subprocess.run(cmd.encode("utf8"), shell=True)
+            cmd = shlex.split(cmd)
+            os.execvp(cmd[0], cmd)
+            exit()
 else:
     subprocess.run([res.strip()])
