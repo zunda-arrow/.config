@@ -18,7 +18,7 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu /home/lunar/.config/sway/wofi
+set $menu /home/lunar/.config/sway/fuzzel
 
 include /etc/sway/config-vars.d/*
 exec /home/lunar/.config/sway/startup
@@ -27,7 +27,8 @@ default_border pixel
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/lunar/Wallpaper/mikuspace.png fill
+output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
+output eDP-1 bg /home/lunar/Wallpaper/sakura/wallhaven-0qxwed.jpg fill
 gaps outer 2
 gaps inner 2
 
