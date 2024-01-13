@@ -1,0 +1,110 @@
+#!/bin/env python
+
+import os
+import subprocess
+import dataclasses
+
+from desktop_parser import DesktopFile
+
+GOTO_PREFIX = "GOTO: "
+
+
+@dataclasses.dataclass
+class Application:
+    name: str
+    icon: str
+    exec: str
+    path: str
+
+def parse_desktop(file: str) -> Application | None:
+    name = None
+    icon = ""
+    exec = None
+
+    try:
+        with open(file) as f:
+            contents = f.read()
+    except Exception:
+        return None
+
+    for line in contents.splitlines():
+        if line.startswith("Name=") and not name:
+            name = line.removeprefix("Name=")
+        if line.startswith("Exec=") and not exec:
+            exec = line.removeprefix("Exec=")
+        if line.startswith("Icon=") and not icon:
+            icon = line.removeprefix("Icon=")
+
+    if name is None or exec is None:
+        return None
+    
+    return Application(name, icon, exec, file)
+
+
+def open_path(path: str) -> list[Application]:
+    if not os.path.exists(path):
+        return []
+
+    out = []
+
+    for file in os.listdir(path):
+        if os.path.isdir(path + "/" + file):
+            out.extend(open_path(path + "/" + file))
+            continue
+        app = parse_desktop(path + "/" + file)
+        if app != None:
+            out.append(app)
+
+    return out
+
+
+def open_apps():
+    dirs = os.environ.get("XDG_DATA_DIRS", "")
+    XDG_PATHS = dirs.split(":")
+
+    paths = []
+    for path in XDG_PATHS:
+        paths.extend(open_path(path + "/applications"))
+    return paths
+
+
+apps = open_apps()
+
+
+# Get path
+path1 = subprocess.run(
+    f"""swaymsg -t get_tree |
+         jq  -r  '.nodes[].nodes[]  |  if  .nodes  then  [recurse(.nodes[])]  else   []   end   +
+       .floating_nodes | .[] | select(.nodes==[]) | ("{GOTO_PREFIX}" + (.id | tostring) + " " + .name)'""",
+    shell=True,
+    capture_output=True,
+).stdout.decode("utf8")
+
+
+def name(app):
+    if app.icon:
+        return f"{app.name}\x00icon\x1f{app.icon}"
+    return app.name
+
+path2 = '\n'.join([name(app) for app in apps])
+
+paths = f"{path1}\n{path2}"
+
+res = subprocess.run(
+    ["fuzzel", "-d"], capture_output=True, input=paths.encode("utf8")
+).stdout.decode("utf8")
+
+if not res:
+    exit()
+
+if res.startswith(GOTO_PREFIX):
+    id = res.strip(GOTO_PREFIX).split(" ")[0].strip()
+    subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
+elif res.strip() in path2:
+    # find the command
+    for x in reversed(apps):
+        if res.strip() in x.name:    
+            cmd = x.exec.replace("%u", "")
+            subprocess.run(cmd.encode("utf8"), shell=True)
+else:
+    subprocess.run([res.strip()])
