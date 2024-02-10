@@ -2,16 +2,104 @@
 
 import subprocess
 
-capacity = subprocess.run(
-    ["cat", "/sys/class/power_supply/BAT1/capacity"], capture_output=True
+capacity = (
+    subprocess.run(
+        ["cat", "/sys/class/power_supply/BAT1/capacity"], capture_output=True
+    )
+    .stdout.decode("utf8")
+    .strip()
 )
-date = subprocess.run(["date", "+%Y年%m月%d日%I時%M分"], capture_output=True)
+status = (
+    subprocess.run(["cat", "/sys/class/power_supply/BAT1/status"], capture_output=True)
+    .stdout.decode("utf8")
+    .strip()
+)
+date = (
+    subprocess.run(["date", "+%Y年%m月%d日%I時%M分"], capture_output=True)
+    .stdout.decode("utf8")
+    .strip()
+)
+volume = (
+    subprocess.run(
+        "pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+(?=%)' | head -n 1",
+        capture_output=True,
+        shell=True,
+    )
+    .stdout.decode("utf8")
+    .strip()
+)
+volume_muted = subprocess.run(
+    ["pactl", "get-sink-mute", "@DEFAULT_SINK@"], capture_output=True
+).stdout.decode("utf8")
+
+if "yes" in volume_muted:
+    audio_symbol = "󰝟"
+elif int(volume) == 0:
+    audio_symbol = ""
+elif int(volume) < 70:
+    audio_symbol = "󰖀"
+else:
+    audio_symbol = ""
+
+battery_icon = "󰁹"
+capacity = int(capacity)
+
+if "Charging" in status:
+    if capacity < 20:
+        battery_icon = "󰢜"
+    elif capacity < 30:
+        battery_icon = "󰂆"
+    elif capacity < 40:
+        battery_icon = "󰂇"
+    elif capacity < 60:
+        battery_icon = "󰂈"
+    elif capacity < 60:
+        battery_icon = "󰢝"
+    elif capacity < 70:
+        battery_icon = "󰂉"
+    elif capacity < 80:
+        battery_icon = "󰢞"
+    elif capacity < 90:
+        battery_icon = "󰂊"
+    elif capacity < 100:
+        battery_icon = "󰂋"
+    else:
+        battery_icon = "󰂅"
+else:
+    if capacity < 20:
+        battery_icon = "󰁺"
+    elif capacity < 30:
+        battery_icon = "󰁻"
+    elif capacity < 40:
+        battery_icon = "󰁼"
+    elif capacity < 50:
+        battery_icon = "󰁽"
+    elif capacity < 60:
+        battery_icon = "󰁾"
+    elif capacity < 70:
+        battery_icon = "󰁿"
+    elif capacity < 80:
+        battery_icon = "󰂀"
+    elif capacity < 90:
+        battery_icon = "󰂁"
+    elif capacity < 100:
+        battery_icon = "󰂂"
+    else:
+        battery_icon = "󰁹"
+# Strange
+focused = subprocess.run("swaymsg -t get_workspaces | jq -r '.[] | select(.focused==true).output'", shell=True, capture_output=True).stdout.decode("utf8").strip()
+scale = float(subprocess.run(f"swaymsg -t get_tree | jq -r '.nodes | .[] | select(.name=\"{focused}\").scale'", shell=True, capture_output=True).stdout.decode("utf8").strip()[5:])
+
 
 print(
     "",
-    date.stdout.decode("utf8").strip(),
+    date,
     " ",
-    "󰁹 ",
-    capacity.stdout.decode("utf8").strip(),
+    battery_icon + " ",
+    capacity,
+    " 󰍉 ",
+    round(scale * 100) / 100,
+    " " + audio_symbol + " ",
+    volume,
     sep="",
 )

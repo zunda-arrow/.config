@@ -50,8 +50,11 @@ XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # Brightness
-XF86MonBrightness{Up,Down}  
-  brightnessctl s 10%{+,-}
+XF86MonBrightnessUp
+  brightnessctl s 10%+
+
+XF86MonBrightnessDown
+  brightnessctl s 10%-
 
 #
 # bspwm hotkeys

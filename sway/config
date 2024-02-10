@@ -27,19 +27,32 @@ default_border pixel
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+
+# Savory
+# Sakura costumes
 output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
+# output eDP-1 bg /home/lunar/Wallpaper/osaka/osaka1.png fill
 # output eDP-1 bg /home/lunar/Wallpaper/sakura/wallhaven-0qxwed.jpg fill
+
+# Sakura NSFW
+# output * bg /home/lunar/Wallpaper/sakura/sakuranurse.png fill
+# output * bg /home/lunar/Wallpaper/wallhaven-v9ogj3.png fill
+
 gaps outer 2
 gaps inner 2
 
 #
-# Example configuration:
-#
-output DP-2 resolution 1920x1080 position 0,0
-output DP-4 resolution 3840x2160 position 1920,0 scale 1.8
-output eDP-1 resolution 1920x1080 position 5376,0 scale 1.6
+# Multi-monitor configuration
 
-#
+# output DP-2 resolution 1920x1080 position 0,0
+# output DP-4 resolution 3840x2160 position 1920,0 scale 1.8
+# output eDP-1 resolution 1920x1080 position 5376,0 scale 1.6
+
+# When on single monitor uncomment this section
+# output eDP-1 resolution 2256x1504 position 0,0 scale 1.6
+output eDP-1 resolution 2256x1504@47.998hz position 0,0 scale 1.6
+
+
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
 ### Idle configuration
@@ -184,11 +197,11 @@ bindsym $mod+Shift+period exec /home/lunar/.config/sway/move-to-new-workspace
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+minus move scratchpad
+    # bindsym $mod+Shift+minus move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+minus scratchpad show
+    # bindsym $mod+minus scratchpad show
 #
 # Resizing containers:
 #
@@ -221,6 +234,12 @@ bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 
 bindsym Print exec slurp | grim -g - - | wl-copy
 
+# Scale
+bindsym $mod+equal exec /home/lunar/.config/sway/change_scale scale+.10
+bindsym $mod+minus exec /home/lunar/.config/sway/change_scale scale-.10
+bindsym $mod+plus exec /home/lunar/.config/sway/change_scale scale+.30
+bindsym $mod+underscore exec /home/lunar/.config/sway/change_scale scale-.30
+
 #
 # Status Bar:
 #
@@ -230,9 +249,10 @@ bar {
     height 18
     wrap_scroll yes
     strip_workspace_numbers yes
+    font Hack Nerd Font
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while /home/lunar/.config/sway/getbar; do sleep 1; done
+    status_command while /home/lunar/.config/sway/getbar; do sleep "0.02"; done
 
     colors {
         statusline #ffffff
@@ -245,6 +265,8 @@ bar {
 input type:touchpad {
     tap enabled
     natural_scroll enabled
+    accel_profile "adaptive"
+    pointer_accel -0.25
 }
 
 include /etc/sway/config.d/*

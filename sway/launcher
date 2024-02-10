@@ -106,8 +106,8 @@ elif res.strip() in path2:
     for x in reversed(apps):
         if res.strip() in x.name:    
             cmd = x.exec.replace("%u", "").replace("%U", "")
-            cmd = shlex.split(cmd)
-            os.execvp(cmd[0], cmd)
+            # cmd = shlex.split(cmd)
+            subprocess.run(cmd, shell=True)
             exit()
 else:
     subprocess.run([res.strip()])
