@@ -88,8 +88,12 @@ else:
         battery_icon = "󰁹"
 # Strange
 focused = subprocess.run("swaymsg -t get_workspaces | jq -r '.[] | select(.focused==true).output'", shell=True, capture_output=True).stdout.decode("utf8").strip()
-scale = float(subprocess.run(f"swaymsg -t get_tree | jq -r '.nodes | .[] | select(.name=\"{focused}\").scale'", shell=True, capture_output=True).stdout.decode("utf8").strip()[5:])
 
+
+try:
+    scale = float(subprocess.run(f"swaymsg -t get_tree | jq -r '.nodes | .[] | select(.name=\"{focused}\").scale'", shell=True, capture_output=True).stdout.decode("utf8").strip()[5:])
+except Exception:
+    scale = 1
 
 print(
     "",

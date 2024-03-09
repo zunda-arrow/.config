@@ -15,7 +15,7 @@
 
 
 (defsrc
-  brdn brup bldn blup prev pp   next mute vold volu ssrq
+  brdn brup bldn blup prev pp   next mute vold volu ssrq home 
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
@@ -27,7 +27,7 @@
 
 
 ;; (deflayer name
-;;  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+;;  _    _    _    _    _    _    _    _    _    _    _    _    _    _   _
 ;;  _    _    _    _    _    _    _    _    _    _    _    _    _    _
 ;;  _    _    _    _    _    _    _    _    _    _    _    _    _
 ;;  _    _    _    _    _    _    _    _    _    _    _    _
@@ -35,7 +35,7 @@
 ;;)
 
 (deflayer base
-  brdn brup bldn blup prev pp   next mute vold volu ssrq
+  brdn brup bldn blup prev pp   next mute vold volu ssrq home
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
@@ -45,7 +45,7 @@
 )
 
 (deflayer mod
-  _    _    r    _    _    _    _    _    _    _    _
+  _    _    r    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    1    2    3    4    5    6    7    8    9    0    -    =    _
