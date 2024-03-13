@@ -30,16 +30,8 @@ default_border pixel
 
 # Savory
 # Sakura costumes
-output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
-# output eDP-1 bg /home/lunar/Wallpaper/osaka/osaka1.png fill
-# output eDP-1 bg /home/lunar/Wallpaper/sakura/wallhaven-0qxwed.jpg fill
-
-# Sakura NSFW
-# output * bg /home/lunar/Wallpaper/sakura/sakuranurse.png fill
-
-# Other NSFW
-# Taihou
-# output * bg /home/lunar/Wallpaper/wallhaven-v9ogj3.png fill
+# output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
+output * bg /home/lunar/Wallpaper/suyaknife.png fill
 
 gaps outer 2
 gaps inner 2
@@ -47,9 +39,13 @@ gaps inner 2
 #
 # Multi-monitor configuration
 
-output DP-2 resolution 1920x1080 position 0,0
-output DP-4 resolution 3840x2160 position 1920,0 scale 1.8
-output eDP-1 resolution 1920x1080 position 5376,0 scale 1.6
+# output DP-3 resolution 1920x1080 position 0,0
+# output DP-1 resolution 3840x2160 position 1920,0 scale 1
+# output eDP-1 resolution 2256x1504 position 5760,0 scale 1.6
+
+output DP-3 resolution 1920x1080 position 0,0
+output DP-2 resolution 3840x2160 position 1920,0 scale 2
+output eDP-1 resolution 2256x1504 position 3840,0 scale 1.6
 
 # When on single monitor uncomment this section
 # output eDP-1 resolution 2256x1504 position 0,0 scale 1.6
@@ -260,7 +256,9 @@ bar {
     colors {
         statusline #ffffff
         background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
+        focused_workspace #333333 #FFC0CB #FFC0CB 
+        active_workspace #333333 #FFC0CB #FFC0CB 
+        inactive_workspace #333333 #32323200 #5c5c5c00
     }
 }
 
@@ -272,6 +270,14 @@ input type:touchpad {
     pointer_accel -0.25
 }
 
+# Theming
+client.focused          #FFC0CB #FFC0CB #ffffff #FFC0CB   #FFC0CB
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #ffffff
 include /etc/sway/config.d/*
 
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
