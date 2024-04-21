@@ -17,6 +17,7 @@ class Application:
     exec: str
     path: str
 
+
 def parse_desktop(file: str) -> Application | None:
     name = None
     icon = ""
@@ -38,7 +39,7 @@ def parse_desktop(file: str) -> Application | None:
 
     if name is None or exec is None:
         return None
-    
+
     return Application(name, icon, exec, file)
 
 
@@ -87,7 +88,8 @@ def name(app):
         return f"{app.name}\x00icon\x1f{app.icon}"
     return app.name
 
-path2 = '\n'.join([name(app) for app in apps])
+
+path2 = "\n".join([name(app) for app in apps])
 
 paths = f"{path1}\n{path2}"
 
@@ -98,16 +100,42 @@ res = subprocess.run(
 if not res:
     exit()
 
-if res.startswith(GOTO_PREFIX):
+custom_command = False
+
+if res.startswith("/"):
+    custom_command = True
+elif res.startswith(GOTO_PREFIX):
     id = res.strip(GOTO_PREFIX).split(" ")[0].strip()
     subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
 elif res.strip() in path2:
     # find the command
     for x in reversed(apps):
-        if res.strip() in x.name:    
-            cmd = x.exec.replace("%u", "").replace("%U", "")
-            # cmd = shlex.split(cmd)
+        if res.strip() in x.name:
+            cmd = x.exec.replace("%u", "").replace("%U", "").replace("%f", "")
             subprocess.run(cmd, shell=True)
             exit()
 else:
-    subprocess.run([res.strip()])
+    custom_command = True
+
+if custom_command:
+    print("Running custom command")
+    if res.startswith("/"):
+        res = res[1:]
+
+    if res.startswith("eval"):
+        name = res.strip().removeprefix("eval") + "="
+        try:
+            o = str(eval(res.removeprefix("eval")))
+        except Exception as e:
+            name = ""
+            o = str(e)
+    else:
+        # This is a terminal command
+        name = res
+        p = subprocess.run(res, shell=True, capture_output=True, check=True)
+        if p.stdout:
+            o = p.stdout.decode("utf8")
+        elif p.stderr:
+            o = p.stderr.decode("utf8")
+
+    subprocess.run(["notify-send", f"{name}{o}"])

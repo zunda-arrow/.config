@@ -28,7 +28,7 @@ Print
 	flameshot gui
 
 # # Full Screen
-Shift + Print
+shift + Print
 	maim | xclip -selection clipboard -t image/png
 
 # make sxhkd reload its configuration files:

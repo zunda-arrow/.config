@@ -1,14 +1,8 @@
 pkill kmonad
 
-kmonad ~/.config/kmonad/layout.kbd &
-kmonad ~/.config/kmonad/layout-2.kbd &
 lxqt-policykit-agent &
 fcitx5 -r &
-
-swaymsg rename workspace number 1 to .
-swaymsg rename workspace number 2 to .
-swaymsg rename workspace number 3 to .
-
+keyd-application-mapper -d
 
 pkill warn.py
-~/Documents/Projects/battery-warn/warn.py
+~/Documents/Projects/battery-warn/warn.py &
