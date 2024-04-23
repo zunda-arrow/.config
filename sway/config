@@ -34,8 +34,8 @@ exec swayidle before-sleep 'swaylock -f'
 # Savory
 # Sakura costumes
 # output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
-# output * bg /home/lunar/Wallpaper/suyaknife.png fill
-output * bg /home/lunar/Wallpaper/akane.png fill
+output * bg /home/lunar/Wallpaper/suyaknife.png fill
+# output * bg /home/lunar/Wallpaper/akane.png fill
 
 
 # output * bg /home/lunar/Wallpaper/maids/wallhaven-9dkjod.jpg fill
@@ -111,7 +111,7 @@ output eDP-1 resolution 2256x1504 position 3840,0 scale 1.6
     floating_modifier $mod normal
 
     # Reload the configuration file
-    # bindsym $mod+Shift+c reload
+    bindsym $mod+Shift+c reload
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'

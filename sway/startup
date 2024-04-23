@@ -6,3 +6,6 @@ keyd-application-mapper -d
 
 pkill warn.py
 ~/Documents/Projects/battery-warn/warn.py &
+
+pkill -f bspwm-tile
+./bspwm-tile &
