@@ -87,24 +87,26 @@ def get_paths(apps):
 
     path2 = "\n".join([name(app) for app in apps])
 
-    return f"{path1}\n{path2}"
+    return f"{path1.strip()}\n{path2}"
 
 
 def main() -> str | None:
     apps = open_apps()
     paths = get_paths(apps)
-
-    res = subprocess.run(
-        ["fuzzel", "-d"], capture_output=True, input=paths.encode("utf8")
-    ).stdout.decode("utf8")
+    print(paths)
+    # input_command = ["/home/lunar/Documents/Projects/launcher/target/release/launcher"]
+    input_command = ["fuzzel", "-d", "--config", "/home/lunar/.config/fuzzel/config.ini"]
+    res = subprocess.check_output(
+        input_command, input=paths.encode("utf8")
+    ).decode('utf8')
 
     if not res:
-        return "Failed to retrieve result"
+        return None
 
     if res.startswith(GOTO_PREFIX):
         id = res.strip(GOTO_PREFIX).split(" ")[0].strip()
         p = subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
-        if p.stderr:
+        if p.stderr and p.returncode != 0:
             return p.stderr.decode('utf8')
         return None
     if res.strip() in paths:
@@ -113,7 +115,7 @@ def main() -> str | None:
             if res.strip() in x.name:
                 cmd = x.exec.replace("%u", "").replace("%U", "").replace("%f", "")
                 p = subprocess.run(cmd, shell=True, capture_output=True)
-                if p.stderr:
+                if p.stderr and p.returncode != 0:
                     return p.stderr.decode('utf8')
                 return None
         return None
@@ -121,15 +123,20 @@ def main() -> str | None:
     if res.startswith("/"):
         res = res[1:]
 
-    if res.startswith("eval"):
-        name = res.strip().removeprefix("eval") + "="
+    if res.startswith("eval") or res.startswith("="):
+        name = res.strip().removeprefix("eval").removeprefix("=")
 
         import math
 
         try:
-            return f"{res.removeprefix('eval').strip()}={str(eval(res.removeprefix('eval'), None, math.__dict__))}"
+            return f"{name}={str(eval(res.removeprefix('eval').removeprefix('='), None, math.__dict__))}"
         except Exception as e:
             return str(e)
+
+    if res.startswith("$"):
+        query = res[1:].replace(" ", "+").strip()
+        input = ["xdg-open", f"https://duckduckgo.com/?q={query}&t=newext&atb=v425-5__&ia=web"]
+        subprocess.run(input)
 
     if res.startswith("scale"):
         p = subprocess.run(
@@ -154,7 +161,9 @@ if __name__ == "__main__":
     try:
         res = main()
     except Exception as e:
+        raise e
         res = "Launcher Error: " + str(e)
         urgency = "critical"
     if res:
+        pass
         subprocess.run(["notify-send", f"--urgency={urgency}", res])

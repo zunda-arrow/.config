@@ -4,6 +4,11 @@ import subprocess
 import json
 import sys
 import time
+from itertools import chain
+
+
+def tree():
+    return json.loads(subprocess.check_output(["swaymsg", "-t", "get_tree"]))
 
 
 def loop(msg):
@@ -16,16 +21,36 @@ def loop(msg):
         else:
             subprocess.run(["swaymsg", "splitv"])
 
+    if msg["change"] == "close":
+        time.sleep(0.01)
+        print(json.dumps(tree(), indent=4))
+
+        nodes = tree()["nodes"]
+        output_nodes = filter(lambda x: x["type"] == "output", nodes)
+        workspaces = chain.from_iterable(
+            map(
+                lambda output: filter(
+                    lambda x: x["type"] == "workspace", output["nodes"]
+                ),
+                output_nodes,
+            )
+        )
+        selected_workspace = next(filter(lambda w: w["focused"], workspaces))
+        print(selected_workspace)
+
+
 
 def main():
-    process = subprocess.Popen(["swaymsg", "-m", "-r", "-t", "subscribe", '["window"]'], stdout=subprocess.PIPE)
+    process = subprocess.Popen(
+        ["swaymsg", "-m", "-r", "-t", "subscribe", '["window"]'], stdout=subprocess.PIPE
+    )
 
     while True:
         try:
             msg = json.loads(process.stdout.readline())
-            print(json.dumps(msg, indent=4))
             loop(msg)
         except Exception as e:
+            raise e
             print(e)
 
 

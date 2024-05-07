@@ -1,10 +1,11 @@
-pkill kmonad
+pkill waybar
+waybar &
 
 lxqt-policykit-agent &
 fcitx5 -r &
 keyd-application-mapper -d
 
-pkill warn.py
+pkill -f warn.py
 ~/Documents/Projects/battery-warn/warn.py &
 
 pkill -f bspwm-tile

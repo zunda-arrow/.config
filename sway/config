@@ -33,28 +33,36 @@ exec swayidle before-sleep 'swaylock -f'
 
 # Savory
 # Sakura costumes
-# output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
-output * bg /home/lunar/Wallpaper/suyaknife.png fill
+output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
+# output * bg /home/lunar/Wallpaper/suyaknife.png fill
+# output * bg /home/lunar/Wallpaper/cheshirelegs.jpg fill
+# output * bg /home/lunar/Wallpaper/maids/formi.jpg fill
+# output * bg /home/lunar/Wallpaper/maids/arcbel.jpg fill
 # output * bg /home/lunar/Wallpaper/akane.png fill
 
 
-# output * bg /home/lunar/Wallpaper/maids/wallhaven-9dkjod.jpg fill
+# output DP-1 bg /home/lunar/Wallpaper/maids/wallhaven-9dkjod.jpg fill
+# output DP-3 bg /home/lunar/Wallpaper/konosuba/megu2.jpg fill
+# output eDP-1 bg /home/lunar/Wallpaper/formi-topless.png fill
 
 gaps outer 2
 gaps inner 2
 
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable
+
 #
 # Multi-monitor configuration
 
-# output DP-3 resolution 1920x1080 position 0,0
-# output DP-1 resolution 3840x2160 position 1920,0 scale 1
-# output eDP-1 resolution 2256x1504 position 5760,0 scale 1.6
-
-output DP-3 resolution 1920x1080 position 540,0
-output DP-4 resolution 3840x2160 position 2460,0 scale 2
-output HEADLESS-1 resolution 1200x540 position 0,0 scale 1.5
-
+output DP-4 resolution 1920x1080 position 0,0
+output DP-3 resolution 3840x2160 position 1920,0 scale 1.5
 output eDP-1 resolution 2256x1504 position 3840,0 scale 1.6
+
+# output DP-3 resolution 1920x1080 position 540,0
+# output DP-4 resolution 3840x2160 position 2460,0 scale 2
+
+# output eDP-1 resolution 2256x1504 position 3840,0 scale 1.6
 # output eDP-1 resolution 2256x1504 position 5760,0 scale 1.6
 # When on single monitor uncomment this section
 # output eDP-1 resolution 2256x1504 position 0,0 scale 1.6
@@ -263,24 +271,24 @@ bindsym Mod4+Mod1+g exec warpd --grid
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    position top
-    height 18
-    wrap_scroll yes
-    strip_workspace_numbers yes
-    font Hack Nerd Font
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while /home/lunar/.config/sway/getbar; do sleep "1"; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        focused_workspace #333333 #FFC0CB #FFC0CB 
-        active_workspace #333333 #FFC0CB #FFC0CB 
-        inactive_workspace #333333 #32323200 #5c5c5c00
-    }
-}
+#bar {
+#    position top
+#    height 18
+#    wrap_scroll yes
+#    strip_workspace_numbers yes
+#    font Hack Nerd Font
+#    # When the status_command prints a new line to stdout, swaybar updates.
+#    # The default just shows the current date and time.
+#    status_command while /home/lunar/.config/sway/getbar; do sleep "1"; done
+#
+#    colors {
+#        statusline #ffffff
+#        background #323232
+#        focused_workspace #333333 #FFC0CB #FFC0CB 
+#        active_workspace #333333 #FFC0CB #FFC0CB 
+#        inactive_workspace #333333 #32323200 #5c5c5c00
+#    }
+#}
 
 # Input devices
 input type:touchpad {
