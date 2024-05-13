@@ -4,7 +4,6 @@
     font-family: "Ubuntu Nerd Font";
     font-size: 14px;
     color: #111111;
-    min-height: 0;
 }
 
 window#waybar {
@@ -16,11 +15,6 @@ window#waybar {
     font-weight: bold;
     font-family: "Ubuntu";
 }
-/*
-#workspaces {
-    padding: 0 5px;
-}
-*/
 
 #workspaces button {
     padding: 0 5px;
@@ -29,23 +23,16 @@ window#waybar {
     border-top: 2px solid transparent;
 }
 
-
 #workspaces button.focused {
     border-top: 2px solid;
 }
 
-
-#mode {
-    background: #64727D;
-    border-bottom: 3px solid white;
-}
-
-#clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray, #mode {
-    padding: 0 4px;
+#backlight, #window, #clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray, #mode {
+    padding: 0 8px;
     margin: 0 2px;
 }
 
-#clock, #pulseaudio, #workspaces {
+#clock {
     font-weight: bold;
 }
 

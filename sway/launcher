@@ -63,6 +63,7 @@ def open_path(path: str) -> list[Application]:
 def open_apps():
     dirs = os.environ.get("XDG_DATA_DIRS", "")
     XDG_PATHS = dirs.split(":")
+    XDG_PATHS += ["/home/lunar/.local/share"]
 
     paths = []
     for path in XDG_PATHS:
@@ -80,6 +81,8 @@ def get_paths(apps):
         capture_output=True,
     ).stdout.decode("utf8")
 
+    path1 = '\n'.join(filter(lambda x: "__i3_scratch" not in x, path1.splitlines()))
+
     def name(app):
         if app.icon:
             return f"{app.name}\x00icon\x1f{app.icon}"
@@ -87,41 +90,37 @@ def get_paths(apps):
 
     path2 = "\n".join([name(app) for app in apps])
 
-    return f"{path1.strip()}\n{path2}"
+    return f"{path1.strip()}\n{path2}", len(path1.split('\n'))
 
 
 def main() -> str | None:
     apps = open_apps()
-    paths = get_paths(apps)
-    print(paths)
+    paths, goto_count = get_paths(apps)
     # input_command = ["/home/lunar/Documents/Projects/launcher/target/release/launcher"]
-    input_command = ["fuzzel", "-d", "--config", "/home/lunar/.config/fuzzel/config.ini"]
+    input_command = ["fuzzel", "-d", "--index", "--config", "/home/lunar/.config/fuzzel/config.ini"]
     res = subprocess.check_output(
         input_command, input=paths.encode("utf8")
     ).decode('utf8')
 
     if not res:
         return None
-
-    if res.startswith(GOTO_PREFIX):
-        id = res.strip(GOTO_PREFIX).split(" ")[0].strip()
-        p = subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
-        if p.stderr and p.returncode != 0:
-            return p.stderr.decode('utf8')
+    if res.strip().isnumeric() and int(res) >= 0:
+        res = int(res)
+        if res < goto_count:
+            id = paths.split('\n')[res].strip(GOTO_PREFIX).split(" ")[0].strip()
+            p = subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
+            if p.stderr and p.returncode != 0:
+                return p.stderr.decode('utf8')
+            return None
+        else:
+            # find the command
+            app = apps[res - goto_count]
+            print(app)
+            cmd = app.exec.replace("%u", "").replace("%U", "").replace("%f", "")
+            p = subprocess.run(cmd, shell=True, capture_output=True)
+            if p.stderr and p.returncode != 0:
+                return p.stderr.decode('utf8')
         return None
-    if res.strip() in paths:
-        # find the command
-        for x in reversed(apps):
-            if res.strip() in x.name:
-                cmd = x.exec.replace("%u", "").replace("%U", "").replace("%f", "")
-                p = subprocess.run(cmd, shell=True, capture_output=True)
-                if p.stderr and p.returncode != 0:
-                    return p.stderr.decode('utf8')
-                return None
-        return None
-
-    if res.startswith("/"):
-        res = res[1:]
 
     if res.startswith("eval") or res.startswith("="):
         name = res.strip().removeprefix("eval").removeprefix("=")

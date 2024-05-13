@@ -24,6 +24,11 @@ include /etc/sway/config-vars.d/*
 exec_always /home/lunar/.config/sway/startup
 default_border pixel
 
+# ????
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway XDG_SESSION_DESKTOP=sway
+exec --no-startup-id dbus-update-activation-environment --all
+exec systemctl --user import-environment
+
 exec swayidle -w timeout 1800 'swaylock -f'
 exec swayidle before-sleep 'swaylock -f'
 
@@ -33,13 +38,22 @@ exec swayidle before-sleep 'swaylock -f'
 
 # Savory
 # Sakura costumes
-output * bg /home/lunar/Wallpaper/sakura/wallhaven-n6dg6w.png fill
-# output * bg /home/lunar/Wallpaper/suyaknife.png fill
+output * bg #bbbbbb solid_color
+# output DP-3 bg /home/lunar/Wallpaper/sakura/5057489-anime-cardcaptor-sakura-keroberos-card-captor-sakura-sakura-kinomoto.jpg fill
+# output DP-2 bg /home/lunar/Wallpaper/suyaknife.png fill
 # output * bg /home/lunar/Wallpaper/cheshirelegs.jpg fill
 # output * bg /home/lunar/Wallpaper/maids/formi.jpg fill
 # output * bg /home/lunar/Wallpaper/maids/arcbel.jpg fill
 # output * bg /home/lunar/Wallpaper/akane.png fill
+# output DP-3 bg /home/lunar/Wallpaper/widescreen/bikinis/a.png fill
+# output DP-4 bg /home/lunar/Wallpaper/widescreen/bikinis/b.png fill
 
+# output DP-3 bg /home/lunar/Wallpaper/sakura/train.jpg  fill
+
+# output DP-3 bg /home/lunar/Wallpaper/shrine.jpg  fill
+output DP-3 bg #cccccc solid_color
+
+output DP-4 bg /home/lunar/Wallpaper/sakura/jester.jpg  fill
 
 # output DP-1 bg /home/lunar/Wallpaper/maids/wallhaven-9dkjod.jpg fill
 # output DP-3 bg /home/lunar/Wallpaper/konosuba/megu2.jpg fill
@@ -55,18 +69,9 @@ bindswitch --reload --locked lid:off output $laptop enable
 #
 # Multi-monitor configuration
 
-output DP-4 resolution 1920x1080 position 0,0
-output DP-3 resolution 3840x2160 position 1920,0 scale 1.5
-output eDP-1 resolution 2256x1504 position 3840,0 scale 1.6
-
-# output DP-3 resolution 1920x1080 position 540,0
-# output DP-4 resolution 3840x2160 position 2460,0 scale 2
-
-# output eDP-1 resolution 2256x1504 position 3840,0 scale 1.6
-# output eDP-1 resolution 2256x1504 position 5760,0 scale 1.6
-# When on single monitor uncomment this section
-# output eDP-1 resolution 2256x1504 position 0,0 scale 1.6
-# output eDP-1 resolution 2256x1504@47.998hz position 0,0 scale 1.6
+output DP-3 resolution 1920x1080 position 0,200
+output DP-4 resolution 3840x2160 position 1920,0 scale 1.5 scale_filter smart
+output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
 
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs

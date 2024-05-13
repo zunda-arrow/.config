@@ -1,5 +1,13 @@
 pkill waybar
-waybar &
+
+pkill dunst
+dunst &
+cd ~/.config/waybar
+waybar --config main-bar-config &
+waybar --config alt-bar-config &
+waybar --config laptop-bar-config &
+
+cd ~
 
 lxqt-policykit-agent &
 fcitx5 -r &
@@ -10,3 +18,7 @@ pkill -f warn.py
 
 pkill -f bspwm-tile
 ./bspwm-tile &
+
+pkill desktop_thingies
+desktop-thingies -c ~/.config/desktop-thingies/config.py &
+desktop-thingies -c ~/.config/desktop-thingies/config2.py &
