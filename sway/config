@@ -51,7 +51,7 @@ output * bg #bbbbbb solid_color
 # output DP-3 bg /home/lunar/Wallpaper/sakura/train.jpg  fill
 
 # output DP-3 bg /home/lunar/Wallpaper/shrine.jpg  fill
-output DP-3 bg #cccccc solid_color
+output DP-3 bg #bbbbbb solid_color
 
 output DP-4 bg /home/lunar/Wallpaper/sakura/jester.jpg  fill
 
@@ -184,8 +184,8 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
 
-bindsym $mod+period exec /home/lunar/.config/sway/new-workspace
-bindsym $mod+Shift+period exec /home/lunar/.config/sway/move-to-new-workspace
+bindsym $mod+period exec /home/jake/.config/sway/new-workspace
+bindsym $mod+Shift+period exec /home/jake/.config/sway/move-to-new-workspace
 
 # Layout stuff:
 #

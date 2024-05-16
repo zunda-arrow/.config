@@ -10,7 +10,10 @@ waybar --config laptop-bar-config &
 cd ~
 
 lxqt-policykit-agent &
-fcitx5 -r &
+# fcitx5 -r &
+
+flatpak run org.fcitx.Fcitx5 &
+
 keyd-application-mapper -d
 
 pkill -f warn.py
@@ -19,6 +22,6 @@ pkill -f warn.py
 pkill -f bspwm-tile
 ./bspwm-tile &
 
-pkill desktop_thingies
+pkill -f desktop-thingies
 desktop-thingies -c ~/.config/desktop-thingies/config.py &
 desktop-thingies -c ~/.config/desktop-thingies/config2.py &

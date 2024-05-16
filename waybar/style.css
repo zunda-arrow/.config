@@ -2,12 +2,12 @@
     border: none;
     border-radius: 0;
     font-family: "Ubuntu Nerd Font";
-    font-size: 14px;
+    font-size: 13px;
     color: #111111;
 }
 
 window#waybar {
-    background: transparent;
+    background: #ffffff;
     color: black;
 }
 
@@ -28,7 +28,7 @@ window#waybar {
 }
 
 #backlight, #window, #clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray, #mode {
-    padding: 0 8px;
+    padding: 0 15px;
     margin: 0 2px;
 }
 

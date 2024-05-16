@@ -12,31 +12,19 @@ def tree():
 
 
 def loop(msg):
-    width = msg["container"]["rect"]["width"]
-    height = msg["container"]["rect"]["height"]
-
-    if msg["change"] == "focus":
-        if width >= height:
-            subprocess.run(["swaymsg", "splith"])
-        else:
-            subprocess.run(["swaymsg", "splitv"])
-
-    if msg["change"] == "close":
-        time.sleep(0.01)
-        print(json.dumps(tree(), indent=4))
+    if msg["change"] == "new":
+        width = msg["container"]["rect"]["width"]
+        height = msg["container"]["rect"]["height"]
 
         nodes = tree()["nodes"]
         output_nodes = filter(lambda x: x["type"] == "output", nodes)
-        workspaces = chain.from_iterable(
-            map(
-                lambda output: filter(
-                    lambda x: x["type"] == "workspace", output["nodes"]
-                ),
-                output_nodes,
-            )
-        )
-        selected_workspace = next(filter(lambda w: w["focused"], workspaces))
-        print(selected_workspace)
+
+        print(width, height)
+        
+        if width >= height:
+            subprocess.run(["swaymsg", "splitv"])
+        else:
+            subprocess.run(["swaymsg", "splith"])
 
 
 
