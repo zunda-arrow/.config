@@ -2,11 +2,11 @@ pkill waybar
 
 pkill dunst
 dunst &
+
 cd ~/.config/waybar
 waybar --config main-bar-config &
 waybar --config alt-bar-config &
 waybar --config laptop-bar-config &
-
 cd ~
 
 lxqt-policykit-agent &

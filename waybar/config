@@ -1,7 +1,7 @@
 {
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar at the bottom of your screen
-    "height": 0, // Waybar height
+    "height": 20, // Waybar height
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,

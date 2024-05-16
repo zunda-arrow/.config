@@ -18,10 +18,10 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu /home/lunar/.config/sway/launcher
+set $menu /home/jake/.config/sway/launcher
 
 include /etc/sway/config-vars.d/*
-exec_always /home/lunar/.config/sway/startup
+exec_always /home/jake/.config/sway/startup
 default_border pixel
 
 # ????
@@ -39,25 +39,9 @@ exec swayidle before-sleep 'swaylock -f'
 # Savory
 # Sakura costumes
 output * bg #bbbbbb solid_color
-# output DP-3 bg /home/lunar/Wallpaper/sakura/5057489-anime-cardcaptor-sakura-keroberos-card-captor-sakura-sakura-kinomoto.jpg fill
-# output DP-2 bg /home/lunar/Wallpaper/suyaknife.png fill
-# output * bg /home/lunar/Wallpaper/cheshirelegs.jpg fill
-# output * bg /home/lunar/Wallpaper/maids/formi.jpg fill
-# output * bg /home/lunar/Wallpaper/maids/arcbel.jpg fill
-# output * bg /home/lunar/Wallpaper/akane.png fill
-# output DP-3 bg /home/lunar/Wallpaper/widescreen/bikinis/a.png fill
-# output DP-4 bg /home/lunar/Wallpaper/widescreen/bikinis/b.png fill
-
-# output DP-3 bg /home/lunar/Wallpaper/sakura/train.jpg  fill
-
-# output DP-3 bg /home/lunar/Wallpaper/shrine.jpg  fill
 output DP-3 bg #bbbbbb solid_color
 
-output DP-4 bg /home/lunar/Wallpaper/sakura/jester.jpg  fill
-
-# output DP-1 bg /home/lunar/Wallpaper/maids/wallhaven-9dkjod.jpg fill
-# output DP-3 bg /home/lunar/Wallpaper/konosuba/megu2.jpg fill
-# output eDP-1 bg /home/lunar/Wallpaper/formi-topless.png fill
+output DP-4 bg /home/jake/Wallpaper/sakura/jester.jpg  fill
 
 gaps outer 2
 gaps inner 2
@@ -261,10 +245,10 @@ bindsym XF86MonBrightnessUp exec brightnessctl set "5%+"
 bindsym Print exec slurp | grim -g - - | wl-copy
 
 # Scale
-bindsym $mod+equal exec /home/lunar/.config/sway/change_scale scale+.10
-bindsym $mod+minus exec /home/lunar/.config/sway/change_scale scale-.10
-bindsym $mod+plus exec /home/lunar/.config/sway/change_scale scale+.30
-bindsym $mod+underscore exec /home/lunar/.config/sway/change_scale scale-.30
+bindsym $mod+equal exec /home/jake/.config/sway/change_scale scale+.10
+bindsym $mod+minus exec /home/jake/.config/sway/change_scale scale-.10
+bindsym $mod+plus exec /home/jake/.config/sway/change_scale scale+.30
+bindsym $mod+underscore exec /home/jake/.config/sway/change_scale scale-.30
 
 # warpd hotkeys
 
@@ -284,7 +268,7 @@ bindsym Mod4+Mod1+g exec warpd --grid
 #    font Hack Nerd Font
 #    # When the status_command prints a new line to stdout, swaybar updates.
 #    # The default just shows the current date and time.
-#    status_command while /home/lunar/.config/sway/getbar; do sleep "1"; done
+#    status_command while /home/jake/.config/sway/getbar; do sleep "1"; done
 #
 #    colors {
 #        statusline #ffffff
