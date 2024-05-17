@@ -26,6 +26,8 @@ default_border pixel
 
 # ????
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway XDG_SESSION_DESKTOP=sway
+exec dbus-activation-environment DISPLAY XDG_CURRENT_DESKTOP=sway
+
 exec --no-startup-id dbus-update-activation-environment --all
 exec systemctl --user import-environment
 
@@ -297,4 +299,7 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 include /etc/sway/config.d/*
 
-for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0 
+for_window [class="steam"] floating enable 
+for_window [class="XIVLauncher.Core"] floating enable
+

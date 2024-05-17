@@ -35,7 +35,7 @@ for file, scale in files:
         Texture(
             mass=1,
             friction=0.1,
-            texture=f"/home/lunar/.config/desktop-thingies/{file}",
+            texture=f"/home/jake/.config/desktop-thingies/{file}",
             scale=1 * scale,
             collision_scale=.8,
             pickup_distance=50,
