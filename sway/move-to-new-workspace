@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-swaymsg move container to workspace number $(date +%s). 

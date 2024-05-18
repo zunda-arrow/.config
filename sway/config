@@ -18,7 +18,7 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu /home/jake/.config/sway/launcher
+set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
 
 include /etc/sway/config-vars.d/*
 exec_always /home/jake/.config/sway/startup
@@ -170,8 +170,8 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
 
-bindsym $mod+period exec /home/jake/.config/sway/new-workspace
-bindsym $mod+Shift+period exec /home/jake/.config/sway/move-to-new-workspace
+bindsym $mod+period exec /home/jake/scripts/sway/new-workspace
+bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
 
 # Layout stuff:
 #
