@@ -4,10 +4,10 @@ pkill waybar
 
 
 # Its convienent to have steam contantly running
-if [ -z $(pgrep steam) ]; then
-	echo "Starting Steam"
-	flatpak run com.valvesoftware.Steam -silent &
-fi
+#if [ -z $(pgrep steam) ]; then
+#	echo "Starting Steam"
+#	flatpak run com.valvesoftware.Steam -silent &
+#fi
 
 # Do the same for discord
 if [ -z $(pgrep discord) ]; then
@@ -18,10 +18,9 @@ fi
 
 pkill dunst
 dunst &
-steam &
 
 cd ~/.config/waybar
-waybar --config main-bar-config &
+waybar --config main-bar-config --style style.css &
 waybar --config alt-bar-config &
 waybar --config laptop-bar-config &
 cd ~
@@ -32,8 +31,8 @@ flatpak run org.fcitx.Fcitx5 -d &
 
 keyd-application-mapper -d
 
-pkill -f warn.py
-~/Documents/Projects/battery-warn/warn.py &
+pkill -f battery-monitor
+battery-monitor &
 
 pkill -f bspwm-tile
 ./bspwm-tile &

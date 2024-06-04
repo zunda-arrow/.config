@@ -13,14 +13,19 @@ set $left j
 set $down k
 set $up l
 set $right semicolon
+
+set $main-monitor 'Lenovo Group Limited LEN L28u-30 U1B3LMTA'
+set $second-monitor 'Hewlett Packard HP 22cwa 6CM6381DH4'
+
 # Your preferred terminal emulator
-set $term foot
+exec foot --server
+set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
 
-include /etc/sway/config-vars.d/*
+include /home/jake/.config/sway/config.d/*
 exec_always /home/jake/.config/sway/startup
 default_border pixel
 
@@ -43,10 +48,11 @@ exec swayidle before-sleep 'swaylock -f'
 output * bg #bbbbbb solid_color
 output DP-3 bg #bbbbbb solid_color
 
-output DP-4 bg /home/jake/Wallpaper/sakura/jester.jpg  fill
+output $main-monitor bg /home/jake/Wallpaper/sakura/jester.jpg  fill
+output $main-monitor bg /home/jake/Wallpaper/monogatari/hanekawa.jpg fill
 
-gaps outer 2
-gaps inner 2
+gaps outer 0
+gaps inner 0
 
 set $laptop eDP-1
 bindswitch --reload --locked lid:on output $laptop disable
@@ -55,10 +61,9 @@ bindswitch --reload --locked lid:off output $laptop enable
 #
 # Multi-monitor configuration
 
-output DP-3 resolution 1920x1080 position 0,200
-output DP-4 resolution 3840x2160 position 1920,0 scale 1.5 scale_filter smart
+output $second-monitor resolution 1920x1080 position 0,200
+output $main-monitor resolution 3840x2160 position 1920,0 scale 1.5 scale_filter smart
 output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
-
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -178,7 +183,7 @@ bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
+    bindsym $mod+s splith
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
@@ -190,7 +195,7 @@ bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+s floating toggle
+    bindsym $mod+d floating toggle
 
     # Swap focus between the tiling area and the floating area
     bindsym $mod+space focus mode_toggle
@@ -217,16 +222,16 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
+    bindsym $left resize grow width 10px
+    bindsym $down resize shrinkheight 10px
+    bindsym $up resize grow height 10px
+    bindsym $right resize shrink width 10px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
+    bindsym Left resize grow width 10px
+    bindsym Down resize shrink height 10px
+    bindsym Up resize grow height 10px
+    bindsym Right resize shrink width 10px
 
     # Return to default mode
     bindsym Return mode "default"

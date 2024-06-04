@@ -1,7 +1,7 @@
 from desktop_thingies import Texture
 
 framerate = 60
-monitor = "DP-3"
+monitor = "DP-4"
 
 top_offset = 20
 
@@ -36,7 +36,7 @@ for file, scale in files:
             mass=1,
             friction=0.1,
             texture=f"/home/jake/.config/desktop-thingies/{file}",
-            scale=1 * scale,
+            scale=.85 * scale,
             collision_scale=.8,
             pickup_distance=50,
         )
