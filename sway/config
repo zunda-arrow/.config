@@ -9,16 +9,18 @@
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
-set $left j
-set $down k
-set $up l
-set $right semicolon
+set $left h
+set $down j
+set $up k
+set $right l
 
 set $main-monitor 'Lenovo Group Limited LEN L28u-30 U1B3LMTA'
 set $second-monitor 'Hewlett Packard HP 22cwa 6CM6381DH4'
+set $laptop-monitor 'eDP-1'
 
 # Your preferred terminal emulator
 exec foot --server
+exec sudo sudo /etc/keyd/setup-envsieve
 set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
@@ -28,6 +30,10 @@ set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
 include /home/jake/.config/sway/config.d/*
 exec_always /home/jake/.config/sway/startup
 default_border pixel
+
+output * adaptive_sync on
+output * { max_render_time 1 }
+exec_always xrandr --output XWAYLAND0 --primary
 
 # ????
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway XDG_SESSION_DESKTOP=sway
@@ -46,14 +52,23 @@ exec swayidle before-sleep 'swaylock -f'
 # Savory
 # Sakura costumes
 output * bg #bbbbbb solid_color
-output DP-3 bg #bbbbbb solid_color
+output $second-monitor bg #C80B27 solid_color
+output $second-monitor bg #EADCD1 solid_color
 
-output $main-monitor bg /home/jake/Wallpaper/sakura/jester.jpg  fill
-output $main-monitor bg /home/jake/Wallpaper/monogatari/hanekawa.jpg fill
+# output $main-monitor bg /home/jake/Wallpaper/sakura/jester.jpg  fill
+# output $main-monitor bg /home/jake/Wallpaper/monogatari/hanekawa.jpg fill
+output $main-monitor bg /home/jake/Wallpaper/adachirei4.jpg fit #EADCD1
+
+# output $main-monitor bg /home/jake/Wallpaper/???/elf2.jpg fit #FFF2E9
+# output $main-monitor bg /home/jake/Wallpaper/monogatari/hanekawa2.jpg fit #FFF2E9
+# output $second-monitor bg #F97491 solid_color
+
+output $laptop-monitor bg /home/jake/Wallpaper/hakurei-shrine2.jpg fill
 
 gaps outer 0
 gaps inner 0
 
+exec_always .config/sway/clamshell
 set $laptop eDP-1
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
@@ -61,8 +76,16 @@ bindswitch --reload --locked lid:off output $laptop enable
 #
 # Multi-monitor configuration
 
-output $second-monitor resolution 1920x1080 position 0,200
-output $main-monitor resolution 3840x2160 position 1920,0 scale 1.5 scale_filter smart
+#output $second-monitor {
+#    mode "1920x1080@60.000Hz"
+#    position 0,200
+#}
+
+#output $main-monitor {
+#    position 1920,0
+#    scale 1
+#}
+
 output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
@@ -118,7 +141,7 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
     bindsym $mod+Shift+c reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -183,8 +206,8 @@ bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+s splith
-    bindsym $mod+v splitv
+    bindsym $mod+v splith
+    bindsym $mod+s splitv
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking
@@ -192,10 +215,10 @@ bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
     # bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
+    bindsym $mod+d fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+d floating toggle
+    bindsym $mod+f floating toggle
 
     # Swap focus between the tiling area and the floating area
     bindsym $mod+space focus mode_toggle
@@ -295,10 +318,16 @@ input type:touchpad {
 }
 
 # Theming
-client.focused          #FFC0CB #FFC0CB #ffffff #FFC0CB   #FFC0CB
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+# client.focused          #FFC0CB #FFC0CB #ffffff #FFC0CB   #FFC0CB
+# client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+# client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+# client.urgent           #2f343a #900000 #ffffff #900000   #900000
+# client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.focused          #6E3D7D #6E3D7D #6E3D7D #6E3D7D   #6E3D7D
+# client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.urgent           #333333 #222222 #888888 #292d2e   #222222
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
@@ -307,4 +336,5 @@ include /etc/sway/config.d/*
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0 
 for_window [class="steam"] floating enable 
 for_window [class="XIVLauncher.Core"] floating enable
+for_window [app_id="kak-browser"] floating enable
 

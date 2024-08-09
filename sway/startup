@@ -2,6 +2,8 @@
 
 pkill waybar
 
+pkill kanshi
+kanshi &
 
 # Its convienent to have steam contantly running
 #if [ -z $(pgrep steam) ]; then
@@ -38,5 +40,5 @@ pkill -f bspwm-tile
 ./bspwm-tile &
 
 pkill -f desktop-thingies
-desktop-thingies -c ~/.config/desktop-thingies/config.py &
+# desktop-thingies -c ~/.config/desktop-thingies/config.py &
 desktop-thingies -c ~/.config/desktop-thingies/config2.py &

@@ -21,16 +21,16 @@ files = [
     ("ran.png", 1.1),
     ("remilia.png", 1),
     ("yukari.png", 1),
-    ("alice.png", 1),
-    ("marisa.png", 1.1),
-    ("reimu.png", 1),
-    ("sakuya.png", 1),
-    ("chen.png", 1),
-    ("flandre.png", 1),
-    ("patchouli.png", 1),
-    ("ran.png", 1.1),
-    ("remilia.png", 1),
-    ("yukari.png", 1),
+    # ("alice.png", 1),
+    # ("marisa.png", 1.1),
+    # ("reimu.png", 1),
+    # ("sakuya.png", 1),
+    # ("chen.png", 1),
+    # ("flandre.png", 1),
+    # ("patchouli.png", 1),
+    # ("ran.png", 1.1),
+    # ("remilia.png", 1),
+    # ("yukari.png", 1),
 ]
 
 objects = []
@@ -41,6 +41,6 @@ for file, scale in files:
             mass=1,
             friction=0.1,
             texture=f"/home/jake/.config/desktop-thingies/{file}",
-            scale=.75 * 1 * scale,
+            scale=.85 * 1 * scale,
         )
     ]
