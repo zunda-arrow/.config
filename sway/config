@@ -336,5 +336,9 @@ include /etc/sway/config.d/*
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0 
 for_window [class="steam"] floating enable 
 for_window [class="XIVLauncher.Core"] floating enable
-for_window [app_id="kak-browser"] floating enable
+
+for_window [app_id="kakoune-popup"] {
+    floating enable
+    resize set 80ppt 80ppt
+}
 
