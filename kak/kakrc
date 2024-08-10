@@ -2,13 +2,9 @@ colorscheme gleam
 
 map global user w ":new-window-at-current-buffer<ret>" -docstring "New Kakoune Window"
 
-add-highlighter global/ number-lines
-add-highlighter global/ show-matching
 set-option global tabstop 2
 set-option global indentwidth 4
 set-option global scrolloff 4,2
-
-addhl global/ wrap
 
 set global ui_options terminal_status_on_top=true terminal_assistant=cat
 
@@ -72,45 +68,52 @@ map global user a ':lsp-code-actions<ret>' -docstring 'LSP Action'
 map global user i ':lsp-formatting<ret>' -docstring 'Format Code'
 map global user p ':popup-terminal<ret>' -docstring 'Open Popup Window'
 
+hook global KakBegin .* %{
+    add-highlighter global/ number-lines
+    add-highlighter global/ show-matching
+    addhl global/ wrap
 
-define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
-define-command -override terminal -params 0.. 'nop %sh{(footclient $@) < /dev/null > /dev/null 2>&1 &}'
-define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
+    define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
+    define-command -override terminal -params 0.. 'nop %sh{(footclient $@) < /dev/null > /dev/null 2>&1 &}'
+    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
 
-define-command config-reload 'source ~/.config/kak/kakrc'
-define-command new-window-at-current-buffer 'terminal kak -c %val{session} %val{buffile}'
+    define-command config-reload 'source ~/.config/kak/kakrc'
+    define-command new-window-at-current-buffer 'terminal kak -c %val{session} %val{buffile}'
 
-declare-option bool show_inline_hint false
+    declare-option bool show_inline_hint false
 
-define-command -override lsp-show-hover -params 4 -docstring %{
-    lsp-show-hover <anchor> <info> <diagnostics> <code_lenses>
-    Render hover info.
-} %{ evaluate-commands %sh{
-    lsp_info=$2
-    lsp_diagnostics=$3
-    lsp_code_lenses=$4
+    define-command -override lsp-show-hover -params 4 -docstring %{
+        lsp-show-hover <anchor> <info> <diagnostics> <code_lenses>
+        Render hover info.
+    } %{ evaluate-commands %sh{
+        lsp_info=$2
+        lsp_diagnostics=$3
+        lsp_code_lenses=$4
 
-    lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
-		lsp_info=$(python -c "import sys; print('', '\n'.join(map(lambda x: f' {x} ', sys.argv[1].splitlines())), ' ', sep='\n')" "$lsp_info")
+        lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
+    		lsp_info=$(echo "$lsp_info" | fold -w 100 -s)
+    		lsp_info=$(python -c "import sys; print('', '\n'.join(map(lambda x: f' {x} ', sys.argv[1].splitlines())), ' ', sep='\n')" "$lsp_info")
+		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
 
-    lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
+        lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
+		    lsp_diagnostics=$(printf %s "$lsp_diagnostics" | sed s/\'/\'\'/g)
 
-
-		if [ "$kak_opt_show_inline_hint" = "true" ]; then
-    		if [ -n "$lsp-info" ]; then
-            case $kak_opt_lsp_hover_anchor in
-                true) printf "info -markup -anchor %%arg{1} -- '%s'" "$lsp_info";;
-                *)    printf "info -markup -- '%s'" "$lsp_info";;
-            esac
-            printf ';set-option window show_inline_hint false'
-            exit 0
+    		if [ "$kak_opt_show_inline_hint" = "true" ]; then
+        		if [ -n "$lsp-info" ]; then
+                case $kak_opt_lsp_hover_anchor in
+                    true) printf "info -markup -anchor %%arg{1} -- '%s'" "$lsp_info";;
+                    *)    printf "info -markup -- '%s'" "$lsp_info";;
+                esac
+                printf ';set-option window show_inline_hint false'
+                exit 0
+            fi
         fi
-    fi
 
-		if [ -n "$lsp_diagnostics" ]; then 
-        printf 'info -markup -- "%s"' "$lsp_diagnostics"
-		fi
-}}
+    		if [ -n "$lsp_diagnostics" ]; then 
+            printf 'info -markup -- "%s"' "$lsp_diagnostics"
+    		fi
+    }}
+}
 
 map global user k ':lsp-hover<ret>' -docstring 'LSP Show'
 map global user k ':eval %{lsp-hover;set-option window show_inline_hint true}<ret>' 
@@ -124,5 +127,5 @@ plug "andreyorst/fzf.kak" config %{
     set-option global fzf_highlight_command 'bat'
 }
 
-map global user f ':fzf -preview -items-cmd %{git ls-files} -kak-cmd edit -fzf-args "--layout reverse"<ret>' -docstring 'Fuzzy Find'
+map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd edit -fzf-args "--layout reverse"<ret>' -docstring 'Fuzzy Find'
 
