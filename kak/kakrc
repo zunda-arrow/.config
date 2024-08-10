@@ -1,5 +1,3 @@
-colorscheme gleam
-
 map global user w ":new-window-at-current-buffer<ret>" -docstring "New Kakoune Window"
 
 set-option global tabstop 2
@@ -69,6 +67,9 @@ map global user i ':lsp-formatting<ret>' -docstring 'Format Code'
 map global user p ':popup-terminal<ret>' -docstring 'Open Popup Window'
 
 hook global KakBegin .* %{
+    eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
+    colorscheme gleam
+
     add-highlighter global/ number-lines
     add-highlighter global/ show-matching
     addhl global/ wrap
@@ -96,6 +97,7 @@ hook global KakBegin .* %{
 		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
 
         lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
+    		lsp_diagnostics=$(echo "$lsp_diagnostics" | fold -w 100 -s)
 		    lsp_diagnostics=$(printf %s "$lsp_diagnostics" | sed s/\'/\'\'/g)
 
     		if [ "$kak_opt_show_inline_hint" = "true" ]; then
@@ -113,18 +115,21 @@ hook global KakBegin .* %{
             printf 'info -markup -- "%s"' "$lsp_diagnostics"
     		fi
     }}
+
+    define-command -override tree-sitter-user-after-highlighter %{
+      add-highlighter -override buffer/show-matching show-matching
+    }
 }
 
 map global user k ':lsp-hover<ret>' -docstring 'LSP Show'
 map global user k ':eval %{lsp-hover;set-option window show_inline_hint true}<ret>' 
-
 
 plug "andreyorst/fzf.kak" config %{
     map global user <s> ':fzf-mode<ret>'
 } demand fzf %{
     set-option global fzf_terminal_command 'popup-terminal-sync kak -c %val{session} -e "%arg{@}"'
     set-option global fzf_implementation 'sk'
-    set-option global fzf_highlight_command 'bat'
+    # set-option global fzf_highlight_command 'bat'
 }
 
 map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd edit -fzf-args "--layout reverse"<ret>' -docstring 'Fuzzy Find'
