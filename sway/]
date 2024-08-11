@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import dataclasses
+import shlex
+
+from desktop_parser import DesktopFile
+
+GOTO_PREFIX = "GOTO: "
+
+
+@dataclasses.dataclass
+class Application:
+    name: str
+    icon: str
+    exec: str
+    path: str
+
+
+def parse_desktop(file: str) -> Application | None:
+    name = None
+    icon = ""
+    exec = None
+
+    try:
+        with open(file) as f:
+            contents = f.read()
+    except Exception:
+        return None
+
+    for line in contents.splitlines():
+        if line.startswith("Name=") and not name:
+            name = line.removeprefix("Name=")
+        if line.startswith("Exec=") and not exec:
+            exec = line.removeprefix("Exec=")
+        if line.startswith("Icon=") and not icon:
+            icon = line.removeprefix("Icon=")
+
+    if name is None or exec is None:
+        return None
+
+    return Application(name, icon, exec, file)
+
+
+def open_path(path: str) -> list[Application]:
+    if not os.path.exists(path):
+        return []
+
+    out = []
+
+    for file in os.listdir(path):
+        if os.path.isdir(path + "/" + file):
+            out.extend(open_path(path + "/" + file))
+            continue
+        app = parse_desktop(path + "/" + file)
+        if app != None:
+            out.append(app)
+
+    return out
+
+
+def open_apps():
+    dirs = os.environ.get("XDG_DATA_DIRS", "")
+    XDG_PATHS = dirs.split(":")
+    XDG_PATHS += ["/home/jake/.local/share", "/usr/share/"]
+
+    paths = []
+    for path in XDG_PATHS:
+        paths.extend(open_path(path + "/applications"))
+    return paths
+
+
+def get_paths(apps):
+    # Get path
+    path1 = subprocess.run(
+        f"""swaymsg -t get_tree |
+             jq  -r  '.nodes[].nodes[]  |  if  .nodes  then  [recurse(.nodes[])]  else   []   end   +
+           .floating_nodes | .[] | select(.nodes==[]) | ("{GOTO_PREFIX}" + (.id | tostring) + " " + .name)'""",
+        shell=True,
+        capture_output=True,
+    ).stdout.decode("utf8")
+
+    path1 = '\n'.join(filter(lambda x: "__i3_scratch" not in x, path1.splitlines()))
+
+    def name(app):
+        if app.icon:
+            return f"{app.name}\x00icon\x1f{app.icon}"
+        return app.name
+
+    path2 = "\n".join([name(app) for app in apps])
+
+    return f"{path1.strip()}\n{path2}", len(path1.split('\n'))
+
+
+def main() -> str | None:
+    apps = open_apps()
+    paths, goto_count = get_paths(apps)
+    # input_command = ["/home/lunar/Documents/Projects/launcher/target/release/launcher"]
+    input_command = ["fuzzel", "-d", "--index", "--config", "/home/jake/.config/fuzzel/config.ini"]
+    res = subprocess.check_output(
+        input_command, input=paths.encode("utf8")
+    ).decode('utf8')
+
+    if not res:
+        return None
+    if res.strip().isnumeric() and int(res) >= 0:
+        res = int(res)
+        if res < goto_count:
+            id = paths.split('\n')[res].strip(GOTO_PREFIX).split(" ")[0].strip()
+            p = subprocess.run(["swaymsg", f"[con_id={id}]", "focus"])
+            if p.stderr and p.returncode != 0:
+                return p.stderr.decode('utf8')
+            return None
+        else:
+            # find the command
+            app = apps[res - goto_count]
+            print(app)
+            cmd = app.exec.replace("%u", "").replace("%U", "").replace("%f", "")
+            p = subprocess.run(cmd, shell=True, capture_output=True)
+            if p.stderr and p.returncode != 0:
+                return p.stderr.decode('utf8')
+        return None
+
+    if res.startswith("eval") or res.startswith("="):
+        name = res.strip().removeprefix("eval").removeprefix("=")
+
+        import math
+
+        try:
+            return f"{name}={str(eval(res.removeprefix('eval').removeprefix('='), None, math.__dict__))}"
+        except Exception as e:
+            return str(e)
+
+    if res.startswith("$"):
+        query = res[1:].replace(" ", "+").strip()
+        input = ["xdg-open", f"https://duckduckgo.com/?q={query}&t=newext&atb=v425-5__&ia=web"]
+        subprocess.run(input)
+
+    if res.startswith("scale"):
+        p = subprocess.run(
+            ["/home/lunar/.config/sway/change_scale", res], capture_output=True
+        )
+        name = "Set scale to "
+        o = p.stdout.decode("utf8")
+        return f"{name}{o}"
+
+    # This is a terminal command
+    name = res
+    p = subprocess.run(res, shell=True, capture_output=True, check=True)
+    if p.stdout:
+        o = p.stdout.decode("utf8")
+    elif p.stderr:
+        o = p.stderr.decode("utf8")
+    return f"{o}"
+
+
+if __name__ == "__main__":
+    urgency = "normal"
+    try:
+        res = main()
+    except Exception as e:
+        raise e
+        res = "Launcher Error: " + str(e)
+        urgency = "critical"
+    if res:
+        pass
+        subprocess.run(["notify-send", f"--urgency={urgency}", res])
+

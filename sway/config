@@ -29,7 +29,7 @@ set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
 
 include /home/jake/.config/sway/config.d/*
 exec_always /home/jake/.config/sway/startup
-default_border pixel
+default_border pixel 2
 
 output * adaptive_sync on
 output * { max_render_time 1 }
@@ -54,10 +54,11 @@ exec swayidle before-sleep 'swaylock -f'
 output * bg #bbbbbb solid_color
 output $second-monitor bg #C80B27 solid_color
 output $second-monitor bg #EADCD1 solid_color
+output $second-monitor bg #8FA7B2 solid_color
 
 # output $main-monitor bg /home/jake/Wallpaper/sakura/jester.jpg  fill
 # output $main-monitor bg /home/jake/Wallpaper/monogatari/hanekawa.jpg fill
-output $main-monitor bg /home/jake/Wallpaper/adachirei4.jpg fit #EADCD1
+output $main-monitor bg /home/jake/Wallpaper/adachirei.png fit #EADCD1
 
 # output $main-monitor bg /home/jake/Wallpaper/???/elf2.jpg fit #FFF2E9
 # output $main-monitor bg /home/jake/Wallpaper/monogatari/hanekawa2.jpg fit #FFF2E9
@@ -318,17 +319,17 @@ input type:touchpad {
 }
 
 # Theming
-# client.focused          #FFC0CB #FFC0CB #ffffff #FFC0CB   #FFC0CB
+client.focused          #FFFFFF #FFFFFF #ffffff #FFFFFF   #FFFFFF
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+# client.focused          #6E3D7D #6E3D7D #6E3D7D #6E3D7D   #6E3D7D
 # client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 # client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-# client.urgent           #2f343a #900000 #ffffff #900000   #900000
+# client.urgent           #333333 #222222 #888888 #292d2e   #222222
 # client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-
-client.focused          #6E3D7D #6E3D7D #6E3D7D #6E3D7D   #6E3D7D
-# client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #333333 #222222 #888888 #292d2e   #222222
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
 include /etc/sway/config.d/*
