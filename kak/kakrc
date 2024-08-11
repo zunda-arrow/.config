@@ -4,6 +4,7 @@ set-option global tabstop 2
 set-option global indentwidth 4
 set-option global scrolloff 4,2
 set-option global autoreload true
+set-option global idle_timeout 50
 
 set global ui_options terminal_status_on_top=true terminal_assistant=cat
 
@@ -19,18 +20,6 @@ plug "andreyorst/plug.kak" noload
 
 plug "https://gitlab.com/Screwtapello/kakoune-state-save"
 
-hook global KakBegin .* %{
-    state-save-reg-load colon
-    state-save-reg-load pipe
-    state-save-reg-load slash
-}
-
-hook global KakEnd .* %{
-    state-save-reg-save colon
-    state-save-reg-save pipe
-    state-save-reg-save slash
-}
-
 plug "kakoune-lsp/kakoune-lsp" do %{
     cargo install --locked --force --path .
     # optional: if you want to use specific language servers
@@ -41,13 +30,14 @@ plug "kakoune-lsp/kakoune-lsp" do %{
 plug "evanrelf/byline.kak" config %{
    require-module "byline"
 }
-# 
+
 plug "andreyorst/smarttab.kak"
 
 plug "h-youhei/kakoune-surround"
 
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
     lsp-enable-window
+    smarttab
 }
 
 map global normal <c-/> ":comment-line<ret>"
@@ -125,7 +115,7 @@ hook global KakBegin .* %{
         fi
 
     		if [ -n "$lsp_diagnostics" ]; then 
-            printf 'info -markup -- "%s"' "$lsp_diagnostics"
+            printf "info -markup -- '%s'" "$lsp_diagnostics"
     		fi
     }}
 
@@ -141,9 +131,12 @@ plug "andreyorst/fzf.kak" config %{
     map global user <s> ':fzf-mode<ret>'
 } demand fzf %{
     set-option global fzf_terminal_command 'popup-terminal-sync kak -c %val{session} -e "%arg{@}"'
-    set-option global fzf_implementation 'sk'
-    # set-option global fzf_highlight_command 'bat'
+    set-option global fzf_implementation 'sk --layout reverse'
+    set-option global fzf_highlight_command 'bat'
 }
 
-map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd edit -fzf-args "--layout reverse"<ret>' -docstring 'Fuzzy Find'
+map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd edit<ret>' -docstring 'Fuzzy Find'
+map global user F '<space>sF<ret>' -docstring 'Fuzzy Find In Directory'
+map global user p '<a-!>wl-paste<ret>' -docstring 'Paste from system clipboard after selection'
+map global user P '<!>wl-paste<ret>' -docstring 'Paste from system clipboard before selection'
 
