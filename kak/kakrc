@@ -62,6 +62,7 @@ map global user i ':lsp-formatting<ret>' -docstring 'Format Code'
 map global user <ret> ':popup-terminal<ret>' -docstring 'Open Popup Window'
 
 map global user m ':enter-user-mode surround<ret>'
+map global user r ':lsp-rename-prompt<ret>' -docstring 'LSP Rename'
 
 hook global KakBegin .* %{
     eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
@@ -78,11 +79,13 @@ hook global KakBegin .* %{
     addhl global/ wrap
 
     define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
-    define-command -override terminal -params 0.. 'nop %sh{(footclient $@) < /dev/null > /dev/null 2>&1 &}'
+    define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
     define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
 
     define-command config-reload 'source ~/.config/kak/kakrc'
-    define-command new-window-at-current-buffer 'terminal kak -c %val{session} %val{buffile}'
+    define-command new-window-at-current-buffer %{ eval %sh{
+        printf "terminal kak -c %s %s -e 'select %s.%s,%s.%s'" $kak_session $kak_buffile $kak_cursor_line $kak_cursor_column $kak_cursor_line $kak_cursor_column
+    }}
 
     declare-option bool show_inline_hint false
 
