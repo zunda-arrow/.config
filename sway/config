@@ -207,8 +207,8 @@ bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+v splith
-    bindsym $mod+s splitv
+    bindsym $mod+v splitv
+    bindsym $mod+s splith
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking

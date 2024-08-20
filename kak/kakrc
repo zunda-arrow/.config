@@ -37,7 +37,10 @@ plug "h-youhei/kakoune-surround"
 
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp|gleam) %{
     lsp-enable-window
-    smarttab
+    	expandtab # must be before softtabstop
+    	smarttab
+    	set-option buffer indentwidth 4
+    	set-option global softtabstop 4 # number of spaces to delete on backspace
 }
 
 map global normal <c-/> ":comment-line<ret>"
@@ -140,8 +143,7 @@ hook global KakBegin .* %{
     }
 }
 
-map global user k ':lsp-hover<ret>' -docstring 'LSP Show'
-map global user k ':eval %{lsp-hover;set-option window show_inline_hint true}<ret>' 
+map global user k ':eval %{lsp-hover;set-option window show_inline_hint true}<ret>' -docstring 'LSP Show'
 
 plug "andreyorst/fzf.kak" config %{
     map global user <s> ':fzf-mode<ret>'
