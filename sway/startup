@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-pkill waybar
-
 pkill kanshi
 kanshi &
 
@@ -20,12 +18,6 @@ fi
 
 pkill dunst
 dunst &
-
-cd ~/.config/waybar
-waybar --config main-bar-config --style style.css &
-waybar --config alt-bar-config &
-waybar --config laptop-bar-config &
-cd ~
 
 lxqt-policykit-agent &
 
