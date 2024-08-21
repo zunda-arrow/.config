@@ -1,7 +1,0 @@
-{
-	"include": "./config",
-	"output": ["DP-4"],
-    "modules-left": ["river/tags", "river/mode"],
-    "modules-center": ["river/window"],
-    "modules-right": ["pulseaudio", "clock", "custom/nightlight", "tray"]
-}
