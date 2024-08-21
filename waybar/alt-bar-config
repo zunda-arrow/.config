@@ -1,0 +1,7 @@
+{
+	"include": "./config",
+	"output": ["DP-7"],
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["pulseaudio", "clock", "battery", "custom/nightlight", "tray"]
+}
