@@ -37,10 +37,18 @@ plug "h-youhei/kakoune-surround"
 
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp|gleam) %{
     lsp-enable-window
-    	expandtab # must be before softtabstop
-    	smarttab
-    	set-option buffer indentwidth 4
-    	set-option global softtabstop 4 # number of spaces to delete on backspace
+    smarttab
+    expandtab # must be before softtabstop
+}
+
+hook global WinSetOption filetype=(rust|python|go|c|cpp|gleam) %{
+	set-option buffer indentwidth 4
+	set-option global softtabstop 4 # number of spaces to delete on backspace
+}
+
+hook global WinSetOption filetype=(javascript|typescript) %{
+	set-option buffer indentwidth 2
+	set-option global softtabstop 2 # number of spaces to delete on backspace
 }
 
 map global normal <c-/> ":comment-line<ret>"
@@ -140,6 +148,14 @@ hook global KakBegin .* %{
                 fi
             }"
         }
+    }
+
+    define-command todos %sh{
+        tempfile=$(mktemp)
+        git grep --line-number --column "TODO:" >> $tempfile &
+        git grep --line-number --column "@todo" >> $tempfile &
+        printf "edit -fifo %s *todos*\n" $tempfile
+        printf "set-option buffer filetype grep\n"
     }
 }
 
