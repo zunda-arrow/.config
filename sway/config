@@ -19,7 +19,8 @@ set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
+set $menu python3 /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
+# set $menu fuzzel
 
 include /etc/sway/config.d/*
 include /home/jake/.config/sway/config.d/*
@@ -41,10 +42,10 @@ exec systemctl --user import-environment
 exec swayidle -w timeout 1800 'swaylock -f'
 exec swayidle before-sleep 'swaylock -f'
 
-exec_always .config/sway/clamshell
+# exec_always .config/sway/clamshell
 set $laptop eDP-1
-bindswitch --reload --locked lid:on output $laptop disable
-bindswitch --reload --locked lid:off output $laptop enable
+# bindswitch --reload --locked lid:on output $laptop disable
+# bindswitch --reload --locked lid:off output $laptop enable
 
 output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
 
@@ -115,8 +116,8 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking
-    # bindsym $mod+w layout tabbed
-    # bindsym $mod+e layout toggle split
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
     bindsym $mod+d fullscreen

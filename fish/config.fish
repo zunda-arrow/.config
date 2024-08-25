@@ -25,6 +25,10 @@ zoxide init fish --cmd cd | source
 
 alias z "source ~/scripts/goto-most-recent-dir"
 
+function j
+    cd (jump $argv 2> /dev/null)
+end
+
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:
 #   - the correct directories to the PATH

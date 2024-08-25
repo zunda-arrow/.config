@@ -35,6 +35,10 @@ plug "andreyorst/smarttab.kak"
 
 plug "h-youhei/kakoune-surround"
 
+plug "lunarmagpie/kak-harpoon" config %{
+    harpoon-add-bindings
+}
+
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp|gleam) %{
     lsp-enable-window
     smarttab
@@ -52,9 +56,6 @@ hook global WinSetOption filetype=(javascript|typescript) %{
 }
 
 map global normal <c-/> ":comment-line<ret>"
-
-set-option global lsp_hover_anchor true
-lsp-auto-hover-enable
 
 map global user l %{:enter-user-mode lsp<ret>} -docstring "LSP mode"
 map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
@@ -99,6 +100,7 @@ hook global KakBegin .* %{
     }}
 
     declare-option bool show_inline_hint false
+    declare-option bool show_lsp_error false
 
     define-command -override lsp-show-hover -params 4 -docstring %{
         lsp-show-hover <anchor> <info> <diagnostics> <code_lenses>
@@ -108,14 +110,19 @@ hook global KakBegin .* %{
         lsp_diagnostics=$3
         lsp_code_lenses=$4
 
-        lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
-    		lsp_info=$(echo "$lsp_info" | fold -w 100 -s)
-    		lsp_info=$(python -c "import sys; print('', '\n'.join(map(lambda x: f' {x} ', sys.argv[1].splitlines())), ' ', sep='\n')" "$lsp_info")
-		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
+				if [ -n "$lsp_info" ]; then
+            lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
+        		lsp_info=$(echo "$lsp_info" | fold -w 100 -s)
+        		lsp_info=$(python -c "import sys; print('', '\n'.join(map(lambda x: f' {x} ', sys.argv[1].splitlines())), ' ', sep='\n')" "$lsp_info")
+    		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
+    		fi
 
-        lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
-    		lsp_diagnostics=$(echo "$lsp_diagnostics" | fold -w 100 -s)
-		    lsp_diagnostics=$(printf %s "$lsp_diagnostics" | sed s/\'/\'\'/g)
+				if [ -n "$lsp_diagnostics" ]; then
+            lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
+        		lsp_diagnostics=$(echo "$lsp_diagnostics" | fold -w 100 -s)
+    				lsp_diagnostics=$(python -c "import sys; print('\n'.join(sys.argv[1].splitlines()[:40]))" "$lsp_diagnostics")
+    		    lsp_diagnostics=$(printf %s "$lsp_diagnostics" | sed s/\'/\'\'/g)
+    		fi
 
     		if [ "$kak_opt_show_inline_hint" = "true" ]; then
         		if [ -n "$lsp-info" ]; then
@@ -128,9 +135,12 @@ hook global KakBegin .* %{
             fi
         fi
 
-    		if [ -n "$lsp_diagnostics" ]; then 
-            printf "info -markup -- '%s'" "$lsp_diagnostics"
-    		fi
+    		if [ "$kak_opt_show_lsp_error" = "true" ]; then
+        		if [ -n "$lsp_diagnostics" ]; then 
+                printf "info -markup -- '%s'" "$lsp_diagnostics"
+                printf ';set-option window show_lsp_error false'
+        		fi
+        fi
     }}
 
     define-command -override tree-sitter-user-after-highlighter %{
@@ -160,6 +170,7 @@ hook global KakBegin .* %{
 }
 
 map global user k ':eval %{lsp-hover;set-option window show_inline_hint true}<ret>' -docstring 'LSP Show'
+map global user e ':eval %{lsp-hover;set-option window show_lsp_error true}<ret>' -docstring 'LSP Show'
 
 plug "andreyorst/fzf.kak" config %{
     map global user <s> ':fzf-mode<ret>'
