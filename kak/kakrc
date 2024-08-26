@@ -76,6 +76,8 @@ map global user <ret> ':popup-terminal<ret>' -docstring 'Open Popup Window'
 map global user m ':enter-user-mode surround<ret>'
 map global user r ':lsp-rename-prompt<ret>' -docstring 'LSP Rename'
 
+set global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}}'
+
 hook global KakBegin .* %{
     eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
     colorscheme gleam
@@ -114,33 +116,31 @@ hook global KakBegin .* %{
             lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
         		lsp_info=$(echo "$lsp_info" | fold -w 100 -s)
         		lsp_info=$(python -c "import sys; print('', '\n'.join(map(lambda x: f' {x} ', sys.argv[1].splitlines())), ' ', sep='\n')" "$lsp_info")
-    		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
     		fi
 
 				if [ -n "$lsp_diagnostics" ]; then
             lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
         		lsp_diagnostics=$(echo "$lsp_diagnostics" | fold -w 100 -s)
     				lsp_diagnostics=$(python -c "import sys; print('\n'.join(sys.argv[1].splitlines()[:40]))" "$lsp_diagnostics")
-    		    lsp_diagnostics=$(printf %s "$lsp_diagnostics" | sed s/\'/\'\'/g)
     		fi
+
+		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
+		    lsp_diagnostics=$(printf %s "$lsp_diagnostics" | sed s/\'/\'\'/g)
 
     		if [ "$kak_opt_show_inline_hint" = "true" ]; then
         		if [ -n "$lsp-info" ]; then
-                case $kak_opt_lsp_hover_anchor in
-                    true) printf "info -markup -anchor %%arg{1} -- '%s'" "$lsp_info";;
-                    *)    printf "info -markup -- '%s'" "$lsp_info";;
-                esac
-                printf ';set-option window show_inline_hint false'
-                exit 0
+                printf "info -markup -anchor %s.%s -- '%s';" "$kak_cursor_line" "$kak_cursor_column" "$lsp_info"
             fi
         fi
 
     		if [ "$kak_opt_show_lsp_error" = "true" ]; then
         		if [ -n "$lsp_diagnostics" ]; then 
-                printf "info -markup -- '%s'" "$lsp_diagnostics"
-                printf ';set-option window show_lsp_error false'
+                printf "info -markup -- '%s';" "$lsp_diagnostics"
         		fi
         fi
+
+        printf 'set-option window show_inline_hint false;'
+        printf 'set-option window show_lsp_error false;'
     }}
 
     define-command -override tree-sitter-user-after-highlighter %{
@@ -169,8 +169,8 @@ hook global KakBegin .* %{
     }
 }
 
-map global user k ':eval %{lsp-hover;set-option window show_inline_hint true}<ret>' -docstring 'LSP Show'
-map global user e ':eval %{lsp-hover;set-option window show_lsp_error true}<ret>' -docstring 'LSP Show'
+map global user k ':eval %{set-option window show_inline_hint true; lsp-hover}<ret>' -docstring 'LSP Show'
+map global user e ':eval %{set-option window show_lsp_error true; lsp-hover}<ret>' -docstring 'LSP Show'
 
 plug "andreyorst/fzf.kak" config %{
     map global user <s> ':fzf-mode<ret>'
