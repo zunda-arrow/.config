@@ -8,6 +8,7 @@ set -x XMODIFIERS @im=fcitx
 
 pyenv init - | source
 
+set -x VISUAL (which kak)
 set -x SUDO_EDITOR (which kak)
 
 set -x MOZ_ENABLE_WAYLAND 1
@@ -21,9 +22,7 @@ source ~/.asdf/asdf.fish
 
 thefuck --alias | source
 
-zoxide init fish --cmd cd | source
-
-alias z "source ~/scripts/goto-most-recent-dir"
+alias kk "kak-session"
 
 function j
     cd (jump $argv 2> /dev/null)

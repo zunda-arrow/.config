@@ -7,6 +7,7 @@ set-option global autoreload true
 set-option global idle_timeout 50
 
 set global ui_options terminal_status_on_top=true terminal_assistant=cat
+set global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}}'
 
 evaluate-commands %sh{
         plugins="$kak_config/plugins"
@@ -55,7 +56,12 @@ hook global WinSetOption filetype=(javascript|typescript) %{
 	set-option global softtabstop 2 # number of spaces to delete on backspace
 }
 
+# hook global RawKey .* %sh{
+#     printf "set buffer ui_options terminal_status_on_top=true terminal_assistant=cat terminal_title=%s" $kak_bufname
+# }
+
 map global normal <c-/> ":comment-line<ret>"
+map global normal a "<a-:>li" -docstring "Enter insert mode after the cursor"
 
 map global user l %{:enter-user-mode lsp<ret>} -docstring "LSP mode"
 map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
@@ -73,28 +79,28 @@ map global user a ':lsp-code-actions<ret>' -docstring 'LSP Action'
 map global user i ':lsp-formatting<ret>' -docstring 'Format Code'
 map global user <ret> ':popup-terminal<ret>' -docstring 'Open Popup Window'
 
-map global user m ':enter-user-mode surround<ret>'
 map global user r ':lsp-rename-prompt<ret>' -docstring 'LSP Rename'
 
-set global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}}'
+map global user m ':select-surround<ret>' -docstring 'Select surrounding tag'
+
+map global view v 'v12vj' -docstring 'center cursor (vertically + 12)'
+map global view c 'v12vj' -docstring 'center cursor (vertically + 12)'
 
 hook global KakBegin .* %{
     eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
     colorscheme gleam
 
-    declare-user-mode surround
-
-    map global surround s ':surround<ret>' -docstring 'Add surrounding tag'
-    map global surround r ':change-surround<ret>' -docstring 'Change surrounding tag'
-    map global surround d ':delete-surround<ret>' -docstring 'Remove surrounding tag'
-
     add-highlighter global/ number-lines -relative
     add-highlighter global/ show-matching
     addhl global/ wrap
 
-    define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
+    # define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
+    # define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
+    # define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
+
+    define-command popup-terminal -params 0.. 'nop %sh{(footclient $@) < /dev/null > /dev/null 2>&1 &}'
     define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
-    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
+    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient $@}'
 
     define-command config-reload 'source ~/.config/kak/kakrc'
     define-command new-window-at-current-buffer %{ eval %sh{
@@ -184,4 +190,3 @@ map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd e
 map global user F ':file-picker<ret>' -docstring 'Search for files in file browser'
 map global user p '<a-!>wl-paste<ret>' -docstring 'Paste from system clipboard after selection'
 map global user P '<!>wl-paste<ret>' -docstring 'Paste from system clipboard before selection'
-

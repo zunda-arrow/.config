@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-pkill kanshi
-kanshi &
+if [ -z $(pgrep kanshi) ]; then
+	echo "Starting kanshi"
+	kanshi &
+fi
 
 # Its convienent to have steam contantly running
 #if [ -z $(pgrep steam) ]; then
@@ -33,4 +35,4 @@ pkill -f bspwm-tile
 
 pkill -f desktop-thingies
 # desktop-thingies -c ~/.config/desktop-thingies/config.py &
-desktop-thingies -c ~/.config/desktop-thingies/config2.py &
+desktop-thingies -c ~/.config/desktop-thingies/config4.py &

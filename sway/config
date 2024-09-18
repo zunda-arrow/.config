@@ -19,7 +19,7 @@ set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu python3 /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
+set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
 # set $menu fuzzel
 
 include /etc/sway/config.d/*
