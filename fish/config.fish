@@ -25,7 +25,21 @@ thefuck --alias | source
 alias kk "kak-session"
 
 function j
-    cd (jump $argv 2> /dev/null)
+    cd (jump $argv)
+    if [ $status = 0 ]
+        mark most-recent 1> /dev/null
+    end
+end
+
+function jk
+    j
+    if [ $status = 0 ]
+			kk
+    end
+end
+
+function jj
+    j most-recent
 end
 
 # BEGIN opam configuration

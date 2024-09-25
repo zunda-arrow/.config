@@ -35,4 +35,4 @@ pkill -f bspwm-tile
 
 pkill -f desktop-thingies
 # desktop-thingies -c ~/.config/desktop-thingies/config.py &
-desktop-thingies -c ~/.config/desktop-thingies/config4.py &
+desktop-thingies -c ~/.config/desktop-thingies/config3.py &

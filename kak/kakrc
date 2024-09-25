@@ -52,8 +52,8 @@ hook global WinSetOption filetype=(rust|python|go|c|cpp|gleam) %{
 }
 
 hook global WinSetOption filetype=(javascript|typescript) %{
-	set-option buffer indentwidth 2
-	set-option global softtabstop 2 # number of spaces to delete on backspace
+	set-option buffer indentwidth 0
+	set-option global softtabstop 0 # number of spaces to delete on backspace
 }
 
 # hook global RawKey .* %sh{
