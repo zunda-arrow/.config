@@ -25,5 +25,5 @@
 #--map-syntax ".ignore:Git Ignore"
 
 --tabs=2
---theme="modified-1337.json"
+--theme=1337-modified
 
