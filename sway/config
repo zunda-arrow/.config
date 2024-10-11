@@ -133,8 +133,8 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
 #
 # Scratchpad:
 #
-    bindsym $mod+Shift+q move scratchpad
-    bindsym $mod+q scratchpad show
+    bindsym $mod+Shift+i move scratchpad
+    bindsym $mod+i scratchpad show
 #
 # Resizing containers:
 #
