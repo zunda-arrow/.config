@@ -103,6 +103,17 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
     bindsym $mod+Shift+bracketleft move workspace prev_on_output
     bindsym $mod+Shift+bracketright move workspace next_on_output
 
+bindsym $mod+0 workspace number 0
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 exec /home/jake/scripts/sway/focus-num 1
+bindsym $mod+4 exec /home/jake/scripts/sway/focus-num 2
+bindsym $mod+5 exec /home/jake/scripts/sway/focus-num 3
+bindsym $mod+6 exec /home/jake/scripts/sway/focus-num 4
+bindsym $mod+7 exec /home/jake/scripts/sway/focus-num 5
+bindsym $mod+8 exec /home/jake/scripts/sway/focus-num 6
+bindsym $mod+9 exec /home/jake/scripts/sway/focus-num 7
+
     bindsym $mod+period exec /home/jake/scripts/sway/new-workspace
     bindsym $mod+Shift+period exec /home/jake/scripts/sway/move-to-new-workspace
 
@@ -191,6 +202,9 @@ input type:touchpad {
     accel_profile "adaptive"
     pointer_accel -0.25
 }
+
+assign [app_id="one.ablaze.floorp"] 2
+assign [app_id="FFPWA-01JA208JTQDABXT7P5S5AB48E9"] 1
 
 for_window [class="steam"] floating enable 
 for_window [class="XIVLauncher.Core"] floating enable

@@ -24,6 +24,6 @@
 #--map-syntax "*.ino:C++"
 #--map-syntax ".ignore:Git Ignore"
 
---tabs=2
+--tabs=4
 --theme=1337-modified
 

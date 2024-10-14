@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Connect to the internet at F&M
+./eduroam-connect.sh &
+
 if [ -z $(pgrep kanshi) ]; then
 	echo "Starting kanshi"
 	kanshi &
@@ -12,9 +15,10 @@ fi
 #fi
 
 # Do the same for discord
-if [ -z $(pgrep discord) ]; then
+if [ -z $(swaymsg -t get_tree | grep 01JA208JTQDABXT7P5S5AB48E9) ]; then
 	echo "Starting Discord"
-	flatpak run com.discordapp.Discord --start-minimized & 
+	# flatpak override --user --socket=wayland com.discordapp.Discord; GDK_BACKEND=wayland flatpak run com.discordapp.Discord --enable-features=UseOzonePlatform --ozone-platform=wayland ---enable-wayland-ime
+	firefoxpwa site launch 01JA208JTQDABXT7P5S5AB48E9
 fi
 
 

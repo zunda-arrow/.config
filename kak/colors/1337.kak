@@ -101,10 +101,13 @@ set-face global StatusLineInfo "%opt{purple},%opt{black}"
 set-face global StatusLineValue "%opt{orange},%opt{black}"
 set-face global StatusCursor "%opt{white},%opt{blue}"
 set-face global Prompt "%opt{orange2},%opt{black}"
-set-face global MatchingChar "%opt{red},%opt{black}"
-set-face global Whitespace "%opt{white},%opt{black}+f"
+set-face global MatchingChar "%opt{orange2},%opt{black}"
+set-face global Whitespace "rgb:222222"
 set-face global WrapMarker Whitespace
 set-face global BufferPadding "%opt{black}"
+
+set-face global DiagnosticError "%opt{red2},%opt{black}+u"
+set-face global DiagnosticWarning "%opt{white},%opt{black}+u"
 
 set-face global InfoDefault               Information
 set-face global InfoBlock                 "%opt{white}"
@@ -131,9 +134,12 @@ set-face global ts_constant_character "%opt{orange4}"
 set-face global ts_other "%opt{orange4}"
 
 
-set-face global ts_variable "%opt{white2}"
+set-face global ts_variable "%opt{white}"
+set-face global ts_type "%opt{blue2}"
+set-face global ts_function "%opt{white2}"
 set-face global ts_keyword "%opt{red}"
 set-face global ts_keyword_import "%opt{red}"
+set-face global ts_operator "%opt{white}"
 
 set-face global ts_storage "%opt{red}"
 set-face global ts_storage_type "%opt{orange5}"
@@ -160,8 +166,8 @@ set-face global ts_support_constant_font_name_css "%opt{orange4}"
 set-face global ts_meta_tag_template_value "%opt{pink2}"
 set-face global ts_meta_tag_template_block "%opt{pink2}"
 
-set-face global ts_keyword_control "%opt{red4}"
-set-face global ts_keyword_control "%opt{red4}"
+set-face global ts_keyword_control "%opt{red}"
+set-face global ts_keyword_control "%opt{red}"
 set-face global ts_variable_other "%opt{pink}"
 set-face global ts_variable_other_property "%opt{white3}"
 set-face global ts_constant_language "%opt{orange7}"

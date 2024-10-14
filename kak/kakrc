@@ -1,6 +1,6 @@
 map global user w ":new-window-at-current-buffer<ret>" -docstring "New Kakoune Window"
 
-set-option global tabstop 2
+set-option global tabstop 4
 set-option global indentwidth 4
 set-option global scrolloff 4,2
 set-option global autoreload true
@@ -10,11 +10,11 @@ set global ui_options terminal_status_on_top=true terminal_assistant=cat
 set global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}}'
 
 evaluate-commands %sh{
-        plugins="$kak_config/plugins"
-            mkdir -p "$plugins"
-            [ ! -e "$plugins/plug.kak" ] && \
-                git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
-        printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
+    plugins="$kak_config/plugins"
+        mkdir -p "$plugins"
+        [ ! -e "$plugins/plug.kak" ] && \
+            git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
+    printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
 }
 
 plug "andreyorst/plug.kak" noload
@@ -97,7 +97,8 @@ hook global KakBegin .* %{
 
     add-highlighter global/ number-lines -relative
     add-highlighter global/ show-matching
-    addhl global/ wrap
+    add-highlighter global/ show-whitespaces -indent │ -tab │ -spc "" -lf "" -nbsp ""
+    add-highlighter global/ wrap
 
     # define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
     # define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
