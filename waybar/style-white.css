@@ -52,7 +52,7 @@ window#waybar {
     }
 }
 
-#battery.warning:not(.charging) {
+#battery.low:not(.charging) {
     color: black;
     animation-name: blink;
     animation-duration: 0.5s;

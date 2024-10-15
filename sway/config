@@ -87,6 +87,7 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
+    workspace_auto_back_and_forth yes
     bindsym $mod+bracketleft workspace prev_on_output
     bindsym $mod+bracketright workspace next_on_output
 
@@ -203,8 +204,9 @@ input type:touchpad {
     pointer_accel -0.25
 }
 
-assign [app_id="one.ablaze.floorp"] 2
 assign [app_id="FFPWA-01JA208JTQDABXT7P5S5AB48E9"] 1
+assign [class="Signal"] 1
+assign [app_id="one.ablaze.floorp"] 2
 
 for_window [class="steam"] floating enable 
 for_window [class="XIVLauncher.Core"] floating enable

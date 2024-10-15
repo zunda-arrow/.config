@@ -1,7 +1,6 @@
 map global user w ":new-window-at-current-buffer<ret>" -docstring "New Kakoune Window"
 
 set-option global tabstop 4
-set-option global indentwidth 4
 set-option global scrolloff 4,2
 set-option global autoreload true
 set-option global idle_timeout 50
@@ -41,24 +40,27 @@ plug "lunarmagpie/kak-harpoon" config %{
 }
 
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp|gleam) %{
-    lsp-enable-window
-    smarttab
-    expandtab # must be before softtabstop
+	lsp-enable-window
+	smarttab
+	expandtab # must be before softtabstop
 }
 
 hook global WinSetOption filetype=(rust|python|go|c|cpp|gleam) %{
 	set-option buffer indentwidth 4
 	set-option global softtabstop 4 # number of spaces to delete on backspace
+    smarttab
 }
 
 hook global WinSetOption filetype=(javascript|typescript) %{
 	set-option buffer indentwidth 0
 	set-option global softtabstop 0 # number of spaces to delete on backspace
+    smarttab
 }
 
 hook global WinSetOption filetype=(yml) %{
 	set-option buffer indentwidth 2
 	set-option global softtabstop 2 # number of spaces to delete on backspace
+    smarttab
 }
 
 # hook global RawKey .* %sh{
@@ -92,13 +94,14 @@ map global view v 'v12vj' -docstring 'center cursor (vertically + 12)'
 map global view c 'v12vj' -docstring 'center cursor (vertically + 12)'
 
 hook global KakBegin .* %{
-    eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
-    colorscheme 1337
-
     add-highlighter global/ number-lines -relative
     add-highlighter global/ show-matching
-    add-highlighter global/ show-whitespaces -indent │ -tab │ -spc "" -lf "" -nbsp ""
+    add-highlighter global/ show-whitespaces -indent "│" -tabpad " " -tab "│" -spc " " -lf "" -nbsp ""
     add-highlighter global/ wrap
+
+    eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
+
+    colorscheme 1337
 
     # define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
     # define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
@@ -124,16 +127,16 @@ hook global KakBegin .* %{
         lsp_diagnostics=$3
         lsp_code_lenses=$4
 
-				if [ -n "$lsp_info" ]; then
-            lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
+			if [ -n "$lsp_info" ]; then
+                lsp_info="${lsp_info#"${lsp_info%%[![:space:]]*}"}"
         		lsp_info=$(echo "$lsp_info" | fold -w 100 -s)
         		lsp_info=$(python -c "import sys; print('', '\n'.join(map(lambda x: f' {x} ', sys.argv[1].splitlines())), ' ', sep='\n')" "$lsp_info")
     		fi
 
-				if [ -n "$lsp_diagnostics" ]; then
-            lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
+			if [ -n "$lsp_diagnostics" ]; then
+                lsp_diagnostics="${lsp_diagnostics#"${lsp_diagnostics%%[![:space:]]*}"}"
         		lsp_diagnostics=$(echo "$lsp_diagnostics" | fold -w 100 -s)
-    				lsp_diagnostics=$(python -c "import sys; print('\n'.join(sys.argv[1].splitlines()[:40]))" "$lsp_diagnostics")
+				lsp_diagnostics=$(python -c "import sys; print('\n'.join(sys.argv[1].splitlines()[:40]))" "$lsp_diagnostics")
     		fi
 
 		    lsp_info=$(printf %s "$lsp_info" | sed s/\'/\'\'/g)
