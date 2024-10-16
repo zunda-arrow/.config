@@ -49,6 +49,8 @@ set $laptop eDP-1
 
 output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
 
+exec swaymsg rename workspace to 1000
+
 ### Key bindings
 #
 # Basics:
@@ -60,7 +62,7 @@ output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
     bindsym $mod+Shift+w kill
 
     # Start your launcher
-    bindsym $mod+slash exec $menu
+    # bindsym $mod+slash exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -147,6 +149,9 @@ bindsym $mod+9 exec /home/jake/scripts/sway/focus-num 7
 #
     bindsym $mod+Shift+i move scratchpad
     bindsym $mod+i scratchpad show
+
+ bindsym $mod+Shift+s sticky toggle 
+    
 #
 # Resizing containers:
 #
@@ -204,7 +209,7 @@ input type:touchpad {
     pointer_accel -0.25
 }
 
-assign [app_id="FFPWA-01JA208JTQDABXT7P5S5AB48E9"] 1
+assign [app_id="discord"] 1
 assign [class="Signal"] 1
 assign [app_id="one.ablaze.floorp"] 2
 

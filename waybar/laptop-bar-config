@@ -2,11 +2,11 @@
 	"include": "./config",
 	"output": ["eDP-1"],
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "clock", "backlight", "battery", "custom/nightlight", "tray"],
+    "modules-center": [],
+    "modules-right": ["clock", "pulseaudio", "backlight", "battery", "custom/nightlight", "tray"],
 	"backlight": {
 	    "device": "intel_backlight",
-	    "format": "<b>{percent}%</b> {icon}",
+	    "format": "<b>{percent}</b>\n{icon}\n",
 	    "format-icons": ["", "󰖨"]
 	}
 }

@@ -1,9 +1,13 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: "Ubuntu Nerd Font";
-    font-size: 14px;
+    font-family: "Comic Shanns Mono Nerd Font";
+    font-size: 11px;
     color: #ffffff;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: -2px;
+    margin-right: -2px;
 }
 
 window#waybar {
@@ -13,7 +17,6 @@ window#waybar {
 
 #window {
     font-weight: bold;
-    font-family: "Ubuntu";
 }
 
 #workspaces button {
@@ -23,7 +26,16 @@ window#waybar {
 }
 
 #workspaces button.focused {
-    border-top: 2px solid;
+/*    border-top: 2px solid; */
+	background: #444444;
+}
+
+#workspaces button {
+    font-size: 13px;
+    margin-right: -4px;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    margin-left: -8px;
 }
 
 #backlight, #window, #clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray, #mode {

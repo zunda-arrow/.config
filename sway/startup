@@ -15,9 +15,10 @@ fi
 #fi
 
 # Do the same for discord
-if [ -z $(swaymsg -t get_tree | grep 01JA208JTQDABXT7P5S5AB48E9) ]; then
+if [ -z $(swaymsg -t get_tree | grep discord) ]; then
 	echo "Starting Discord"
 	# flatpak override --user --socket=wayland com.discordapp.Discord; GDK_BACKEND=wayland flatpak run com.discordapp.Discord --enable-features=UseOzonePlatform --ozone-platform=wayland ---enable-wayland-ime
+	discord --enable-features=UseOzonePlatform --ozone-platform=wayland ---enable-wayland-ime &
 	firefoxpwa site launch 01JA208JTQDABXT7P5S5AB48E9 &
 fi
 

@@ -1,41 +1,41 @@
 {
     "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar at the bottom of your screen
-    "height": 20, // Waybar height
+    "position": "left", // Waybar at the bottom of your screen
+	"width": 0,
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
         "format": "{icon}",
         "format-icons": {
             "urgent": "",
-            "focused": "",
+            "focused": "󰓎",
             "default": ""
         }
     },
     "sway/mode": {
+		"rotate": 270,
         "format": "<b>{}</b>"
     },
     "tray": {
         // "icon-size": 21,
-        "spacing": 10
     },
     "battery": {
         "bat": "BAT1",
         "states": {
             "good": 95,
-            "warning": 30,
-            "critical": 10
+            "warning": 15,
+            "critical": 5
         },
-        "format": "<b>{capacity}%</b> {icon}",
-        "format-charging": "<b>{capacity}%</b> 󱐋{icon}",
+        "format": "<b>{capacity}</b>\n {icon}\n\n",
+        "format-charging": "<b>{capacity}</b>\n󱐋{icon}\n\n",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
     "pulseaudio": {
         //"scroll-step": 1,
-        "format": "<b>{volume}%</b> {icon}",
-        "format-bluetooth": "<b>{volume}%</b> {icon}",
+        "format": "<b>{volume}</b>\n{icon}\n",
+        "format-bluetooth": "<b>{volume}</b>{icon}\n",
         "format-muted": "",
         "format-icons": {
             "headphones": "",
@@ -49,9 +49,9 @@
         // "on-click": "pavucontrol"
     },
     "clock": {
-    	"format": "{:%y年%m月%d日%H時%M分}",
-    	"format-alt": "{:%A, %B %d, %Y (%R)}  ",
-    	// "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    	"format": "{:%y\n年\n%m\n月\n%d\n日\n%H\n時\n%M\n分}\n\n",
+    	// "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+    	"tooltip-format": "<tt><small>{calendar}</small></tt>",
     	"calendar": {
     		"mode"          : "year",
     		"mode-mon-col"  : 3,
@@ -75,7 +75,7 @@
     	}
     },
     "custom/nightlight": {
-        "format": "",
+        "format": "<br><br>",
         "max-length": 40,
         "on-click": "pkill gammastep; gammastep -O 4500",
         "on-click-right": "pkill gammastep"

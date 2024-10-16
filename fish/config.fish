@@ -6,8 +6,6 @@ end
 set -x QT_IM_MODULE fcitx
 set -x XMODIFIERS @im=fcitx
 
-pyenv init - | source
-
 set -x VISUAL (which kak)
 set -x SUDO_EDITOR (which kak)
 
@@ -20,9 +18,13 @@ set -x KWIN_DRM_DEVICES = /dev/dri/card1
 # ASDF
 source ~/.asdf/asdf.fish
 
-thefuck --alias | source
+# thefuck --alias | source
 
 alias kk "kak-session"
+
+set -x FZF_DEFAULT_OPTS '--bind ctrl-d:page-down,ctrl-u:page-up'
+set -x ESCDELAY 0
+
 
 function j
     cd (jump $argv)
@@ -42,10 +44,3 @@ function jj
     j most-recent
 end
 
-# BEGIN opam configuration
-# This is useful if you're using opam as it adds:
-#   - the correct directories to the PATH
-#   - auto-completion for the opam binary
-# This section can be safely removed at any time if needed.
-test -r '/home/jake/.opam/opam-init/init.fish' && source '/home/jake/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
-# END opam configuration

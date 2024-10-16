@@ -6,7 +6,7 @@ set-option global autoreload true
 set-option global idle_timeout 50
 
 set global ui_options terminal_status_on_top=true terminal_assistant=cat
-set global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}}'
+set global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
 
 evaluate-commands %sh{
     plugins="$kak_config/plugins"
@@ -20,13 +20,6 @@ plug "andreyorst/plug.kak" noload
 
 plug "https://gitlab.com/Screwtapello/kakoune-state-save"
 
-plug "kakoune-lsp/kakoune-lsp" do %{
-    cargo install --locked --force --path .
-    # optional: if you want to use specific language servers
-    mkdir -p ~/.config/kak-lsp
-    cp -n kak-lsp.toml ~/.config/kak-lsp/
-}
-
 plug "evanrelf/byline.kak" config %{
    require-module "byline"
 }
@@ -35,8 +28,8 @@ plug "andreyorst/smarttab.kak"
 
 plug "h-youhei/kakoune-surround"
 
-plug "lunarmagpie/kak-harpoon" config %{
-    harpoon-add-bindings
+hook global BufCreate .* %{
+    eval %sh{printf "set-option -add buffer ui_options terminal_title=%s" $kak_bufname} 
 }
 
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp|gleam) %{
@@ -49,6 +42,19 @@ hook global WinSetOption filetype=(rust|python|go|c|cpp|gleam) %{
 	set-option buffer indentwidth 4
 	set-option global softtabstop 4 # number of spaces to delete on backspace
     smarttab
+}
+
+hook -group lsp-filetype-javascript global BufSetOption filetype=(?:javascript|typescript) %{
+    set-option buffer lsp_servers %{
+        [biome-lsp]
+        root_globs = ["package.json"]
+        command = "biome"
+        args = ["lsp-proxy"]
+        [typescript-lsp]
+        root_globs = ["package.json"]
+        command = "typescript-language-server"
+        args = ["--stdio"]
+    }
 }
 
 hook global WinSetOption filetype=(javascript|typescript) %{
@@ -96,20 +102,24 @@ map global view c 'v12vj' -docstring 'center cursor (vertically + 12)'
 hook global KakBegin .* %{
     add-highlighter global/ number-lines -relative
     add-highlighter global/ show-matching
-    add-highlighter global/ show-whitespaces -indent "│" -tabpad " " -tab "│" -spc " " -lf "" -nbsp ""
     add-highlighter global/ wrap
 
     eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
 
     colorscheme 1337
 
+    eval %sh{kak-lsp}
+    lsp-enable
+
+    add-highlighter global/ show-whitespaces -indent "│" -tabpad " " -tab "│" -spc " "
+
     # define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
     # define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
     # define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
 
-    define-command popup-terminal -params 0.. 'nop %sh{(footclient $@) < /dev/null > /dev/null 2>&1 &}'
+    define-command popup-terminal -params 0.. 'nop %sh{(footclient -a dropdown-terminal $@) < /dev/null > /dev/null 2>&1 &}'
     define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
-    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient $@}'
+    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient -a dropdown-terminal $@}'
 
     define-command config-reload 'source ~/.config/kak/kakrc'
     define-command new-window-at-current-buffer %{ eval %sh{
@@ -191,7 +201,7 @@ plug "andreyorst/fzf.kak" config %{
     map global user <s> ':fzf-mode<ret>'
 } demand fzf %{
     set-option global fzf_terminal_command 'popup-terminal-sync kak -c %val{session} -e "%arg{@}"'
-    set-option global fzf_implementation 'sk --layout reverse'
+    set-option global fzf_implementation 'fzf --layout reverse --bind ctrl-d:page-down,ctrl-u:page-up'
     set-option global fzf_highlight_command 'bat'
     set-option global fzf_use_main_selection 'false'
 }
@@ -200,3 +210,5 @@ map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd e
 map global user F ':file-picker<ret>' -docstring 'Search for files in file browser'
 map global user p '<a-!>wl-paste<ret>' -docstring 'Paste from system clipboard after selection'
 map global user P '<!>wl-paste<ret>' -docstring 'Paste from system clipboard before selection'
+map global user t ':enter-user-mode tree-sitter<ret>' -docstring 'Tree-sitter mode'
+map global normal "<s-space>" ':enter-user-mode tree-sitter<ret>' -docstring 'Tree-sitter mode'
