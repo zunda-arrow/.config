@@ -25,7 +25,6 @@ alias kk "kak-session"
 set -x FZF_DEFAULT_OPTS '--bind ctrl-d:page-down,ctrl-u:page-up'
 set -x ESCDELAY 0
 
-
 function j
     cd (jump $argv)
     if [ $status = 0 ]
@@ -43,4 +42,14 @@ end
 function jj
     j most-recent
 end
+
+function x
+    xargs -I{}
+end
+
+set -x DEBUGINFOD_URLS "~/debug-info"
+set -x DEBUGINFOD_URLS "https://debuginfod.archlinux.org"
+
+set -x EDITOR kak
+
 

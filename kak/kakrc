@@ -26,17 +26,18 @@ plug "evanrelf/byline.kak" config %{
 
 plug "andreyorst/smarttab.kak"
 
-plug "h-youhei/kakoune-surround"
+plug "kakoune-surround"
 
 hook global BufCreate .* %{
     eval %sh{printf "set-option -add buffer ui_options terminal_title=%s" $kak_bufname} 
 }
 
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp|gleam) %{
-	lsp-enable-window
 	smarttab
 	expandtab # must be before softtabstop
 }
+
+declare-option -hidden str lsp_formatter
 
 hook global WinSetOption filetype=(rust|python|go|c|cpp|gleam) %{
 	set-option buffer indentwidth 4
@@ -54,7 +55,11 @@ hook -group lsp-filetype-javascript global BufSetOption filetype=(?:javascript|t
         root_globs = ["package.json"]
         command = "typescript-language-server"
         args = ["--stdio"]
+        [typescript-lsp.settings._]
+		preferences.includeInlayParameterNameHints = "all"
+		preferences.includeInlayFunctionParameterTypeHints = true
     }
+    set-option buffer lsp_formatter "biome-lsp"
 }
 
 hook global WinSetOption filetype=(javascript|typescript) %{
@@ -89,7 +94,7 @@ map global user y '<a-|>wl-copy<ret>' -docstring 'Yank to clipboard'
 map global user b ':popup-terminal kak -c %val{session} -e lsp-hover-buffer<ret>' -docstring 'Open LSP Hover Buffer in New Window'
 
 map global user a ':lsp-code-actions<ret>' -docstring 'LSP Action'
-map global user i ':lsp-formatting<ret>' -docstring 'Format Code'
+map global user i ':lsp-formatting %opt{lsp_formatter}<ret>' -docstring 'Format Code'
 map global user <ret> ':popup-terminal<ret>' -docstring 'Open Popup Window'
 
 map global user r ':lsp-rename-prompt<ret>' -docstring 'LSP Rename'
@@ -99,6 +104,25 @@ map global user m ':select-surround<ret>' -docstring 'Select surrounding tag'
 map global view v 'v12vj' -docstring 'center cursor (vertically + 12)'
 map global view c 'v12vj' -docstring 'center cursor (vertically + 12)'
 
+
+define-command keebify %{
+    map global normal m "h"
+    map global normal n "j"
+    map global normal e "k"
+    map global normal i "l"
+
+    map global normal M "H"
+    map global normal N "J"
+    map global normal E "K"
+    map global normal I "L"
+
+    map global normal u "i"
+    map global normal l "u"
+    map global normal U "I"
+    map global normal L "U"
+}
+
+
 hook global KakBegin .* %{
     add-highlighter global/ number-lines -relative
     add-highlighter global/ show-matching
@@ -106,20 +130,20 @@ hook global KakBegin .* %{
 
     eval %sh{ kak-tree-sitter -dks --with-highlighting --init $kak_session }
 
-    colorscheme 1337
-
     eval %sh{kak-lsp}
     lsp-enable
 
-    add-highlighter global/ show-whitespaces -indent "│" -tabpad " " -tab "│" -spc " "
+    add-highlighter global/ show-whitespaces -indent "│" -tabpad " " -tab "│" -spc " " -nbsp "" -lf ""
+
+    colorscheme 1337
 
     # define-command popup-terminal -params 0.. 'nop %sh{(footclient --app-id kakoune-popup $@) < /dev/null > /dev/null 2>&1 &}'
     # define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
     # define-command popup-terminal-sync -params 0.. 'eval %sh{footclient --app-id kakoune-popup $@}'
 
-    define-command popup-terminal -params 0.. 'nop %sh{(footclient -a dropdown-terminal $@) < /dev/null > /dev/null 2>&1 &}'
-    define-command -override terminal -params 0.. 'nop %sh{(footclient "$@") < /dev/null > /dev/null 2>&1 &}'
-    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient -a dropdown-terminal $@}'
+    define-command popup-terminal -params 0.. 'nop %sh{(footclient start --class dropdown-terminal $@) < /dev/null > /dev/null 2>&1 &}'
+    define-command -override terminal -params 0.. 'nop %sh{(tmux neww -- "$@") < /dev/null > /dev/null 2>&1 &}'
+    define-command popup-terminal-sync -params 0.. 'eval %sh{footclient -a dropdown-terminal "$@"}'
 
     define-command config-reload 'source ~/.config/kak/kakrc'
     define-command new-window-at-current-buffer %{ eval %sh{
@@ -128,6 +152,22 @@ hook global KakBegin .* %{
 
     declare-option bool show_inline_hint false
     declare-option bool show_lsp_error false
+
+    define-command -hidden -override lsp-handle-progress -params 6 -docstring %{
+      lsp-handle-progress <token> <title> <cancelable> <message> <percentage> <done>
+      Handle progress messages sent from the language server. Override to handle this.
+    } %{
+        set-option global lsp_modeline_progress %sh{
+            if ! "$6"; then
+                echo "🤔"
+            fi
+        }
+    }
+
+
+    define-command -hidden -override lsp-show-code-actions -params 1.. -docstring "Called when code actions are available for the main cursor position" %{
+        set-option buffer lsp_modeline_code_actions "🤯"
+    }
 
     define-command -override lsp-show-hover -params 4 -docstring %{
         lsp-show-hover <anchor> <info> <diagnostics> <code_lenses>
@@ -185,6 +225,19 @@ hook global KakBegin .* %{
         }
     }
 
+    define-command fzf %{
+        eval %sh{
+            tempfile=$(mktemp) 
+            echo "popup-terminal-sync sh -c \"git ls-files | fzf --preview='bat {}' > $tempfile\""
+            echo "eval %sh{
+                text=\$(cat $tempfile)
+                if [ -n \"\$text\" ]; then
+                    printf 'edit %s' \$text
+                fi
+            }"
+        }
+    }
+
     define-command todos %sh{
         tempfile=$(mktemp)
         git grep --line-number --column "TODO:" >> $tempfile &
@@ -194,19 +247,24 @@ hook global KakBegin .* %{
     }
 }
 
+
+define-command -override fzf-buffer %sh{
+
+}
+
 map global user k ':eval %{set-option window show_inline_hint true; lsp-hover}<ret>' -docstring 'LSP Show'
 map global user e ':eval %{set-option window show_lsp_error true; lsp-hover}<ret>' -docstring 'LSP Show'
 
-plug "andreyorst/fzf.kak" config %{
-    map global user <s> ':fzf-mode<ret>'
-} demand fzf %{
-    set-option global fzf_terminal_command 'popup-terminal-sync kak -c %val{session} -e "%arg{@}"'
-    set-option global fzf_implementation 'fzf --layout reverse --bind ctrl-d:page-down,ctrl-u:page-up'
-    set-option global fzf_highlight_command 'bat'
-    set-option global fzf_use_main_selection 'false'
-}
+# plug "andreyorst/fzf.kak" config %{
+#     map global user <s> ':fzf-mode<ret>'
+# } demand fzf %{
+#     set-option global fzf_terminal_command 'popup-terminal-sync kak -c %val{session} -e "%arg{@}"'
+#     set-option global fzf_implementation 'fzf --layout reverse --bind ctrl-d:page-down,ctrl-u:page-up'
+#     set-option global fzf_highlight_command 'bat'
+#     set-option global fzf_use_main_selection 'false'
+# }
 
-map global user f ':fzf -preview -items-cmd %{git ls-files | sort -u} -kak-cmd edit<ret>' -docstring 'Fuzzy Find'
+map global user f ':fzf<ret>' -docstring 'Fuzzy Find'
 map global user F ':file-picker<ret>' -docstring 'Search for files in file browser'
 map global user p '<a-!>wl-paste<ret>' -docstring 'Paste from system clipboard after selection'
 map global user P '<!>wl-paste<ret>' -docstring 'Paste from system clipboard before selection'

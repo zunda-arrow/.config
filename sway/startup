@@ -8,6 +8,10 @@ if [ -z $(pgrep kanshi) ]; then
 	kanshi &
 fi
 
+if [ -z $(prep footserver)]; then
+	foot -s &
+fi
+
 # Its convienent to have steam contantly running
 #if [ -z $(pgrep steam) ]; then
 #	echo "Starting Steam"
@@ -18,22 +22,22 @@ fi
 if [ -z $(swaymsg -t get_tree | grep discord) ]; then
 	echo "Starting Discord"
 	# flatpak override --user --socket=wayland com.discordapp.Discord; GDK_BACKEND=wayland flatpak run com.discordapp.Discord --enable-features=UseOzonePlatform --ozone-platform=wayland ---enable-wayland-ime
-	discord --enable-features=UseOzonePlatform --ozone-platform=wayland ---enable-wayland-ime &
-	firefoxpwa site launch 01JA208JTQDABXT7P5S5AB48E9 &
+	# discord --enable-features=UseOzonePlatform --ozone-platform=wayland ---enable-wayland-ime &
+	# firefoxpwa site launch 01JA208JTQDABXT7P5S5AB48E9 &
 fi
 
 if [ -z $(swaymsg -t get_tree | grep "floorp") ]; then
 	echo "browser"
-	floorp &
+	# floorp &
 fi
 
-
+kdeconnectd &
 pkill dunst
 dunst &
 
 lxqt-policykit-agent &
 
-flatpak run org.fcitx.Fcitx5 -d &
+fcitx5 -d &
 
 keyd-application-mapper -d
 

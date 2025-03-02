@@ -1,6 +1,5 @@
 {
     "layer": "top", // Waybar at top layer
-    "position": "left", // Waybar at the bottom of your screen
 	"width": 0,
     "sway/workspaces": {
         "disable-scroll": true,
@@ -37,6 +36,7 @@
         "format": "<b>{volume}</b>\n{icon}\n",
         "format-bluetooth": "<b>{volume}</b>{icon}\n",
         "format-muted": "",
+		"tooltip-format": "<b>{volume}</b>\n{icon}\n",
         "format-icons": {
             "headphones": "",
             "handsfree": "",
@@ -46,6 +46,9 @@
             "car": "",
             "default": ["", ""]
         },
+        "ignored-sinks": [
+            "Scarlett Solo USB Headphones / Line 1-2",
+        ],
         // "on-click": "pavucontrol"
     },
     "clock": {

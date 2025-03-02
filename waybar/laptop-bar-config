@@ -1,5 +1,6 @@
 {
 	"include": "./config",
+	"position": "left",
 	"output": ["eDP-1"],
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": [],

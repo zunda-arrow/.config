@@ -2,7 +2,6 @@
 #
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
-# Home row direction keys, like vim
 set $left h
 set $down j
 set $up k
@@ -12,9 +11,10 @@ set $main-monitor 'Lenovo Group Limited LEN L28u-30 U1B3LMTA'
 set $second-monitor 'Hewlett Packard HP 22cwa 6CM6381DH4'
 set $laptop-monitor 'eDP-1'
 
+focus_wrapping workspace
+
 # Your preferred terminal emulator
 exec foot --server
-exec sudo sudo /etc/keyd/setup-envsieve
 set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
@@ -22,13 +22,16 @@ set $term footclient
 set $menu /home/jake/scripts/sway/launcher /home/jake/.config/fuzzel/config.ini
 # set $menu fuzzel
 
+exec_always pkill waybar
 include /etc/sway/config.d/*
 include /home/jake/.config/sway/config.d/*
-include /home/jake/.config/sway/themes.d/*
+
+include /home/jake/.config/sway/themes.d/main.conf
+include /home/jake/.config/sway/themes.d/zunda.conf
+# include /home/jake/.config/sway/themes.d/sexy.conf
 
 exec_always /home/jake/.config/sway/startup
 
-output * adaptive_sync on
 output * { max_render_time 1 }
 exec_always xrandr --output XWAYLAND0 --primary
 
@@ -47,7 +50,12 @@ set $laptop eDP-1
 # bindswitch --reload --locked lid:on output $laptop disable
 # bindswitch --reload --locked lid:off output $laptop enable
 
-output eDP-1 resolution 2256x1504 position 4480,0 scale 1.6 scale_filter smart
+output $laptop-monitor resolution 2256x1504 position 4480,0 scale 1.6
+output $main-monitor resolution 3840x2160 position 1600,0 scale 1.8
+output $second-monitor resolution 1920x1080 position 0,0 scale 1.2
+
+# output eDP-1 disable
+output * adaptive_sync on
 
 exec swaymsg rename workspace to 1000
 
@@ -56,10 +64,12 @@ exec swaymsg rename workspace to 1000
 # Basics:
 #
     # Start a terminal
-    bindsym $mod+Shift+Return exec $term
-
+    bindsym $mod+Shift+Return exec $term -e tmux new -Aszunda
+    bindsym $mod+Mod5+Return exec $term -e tmux new -Aszunda
+    bindsym $mod+b exec $term -e tmux new -Aszunda
     # Kill focused window
-    bindsym $mod+Shift+w kill
+    # bindsym $mod+Shift+w kill
+    # bindsym $mod+Shift+e kill
 
     # Start your launcher
     # bindsym $mod+slash exec $menu
@@ -72,7 +82,7 @@ exec swaymsg rename workspace to 1000
     floating_modifier $mod normal
 
     # Reload the configuration file
-    bindsym $mod+Shift+c reload
+    bindsym $mod+Shift+r reload
 
     # Exit sway (logs you out of your Wayland session)
     # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
@@ -89,9 +99,11 @@ exec swaymsg rename workspace to 1000
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
-    workspace_auto_back_and_forth yes
+    # workspace_auto_back_and_forth yes
     bindsym $mod+bracketleft workspace prev_on_output
     bindsym $mod+bracketright workspace next_on_output
+    bindsym $mod+p workspace prev_on_output
+    bindsym $mod+d workspace next_on_output
 
     # Move the focused window with the same, but add Shift
     bindsym $mod+Shift+$left move left
@@ -103,8 +115,16 @@ exec swaymsg rename workspace to 1000
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
+
     bindsym $mod+Shift+bracketleft move workspace prev_on_output
     bindsym $mod+Shift+bracketright move workspace next_on_output
+    bindsym $mod+Shift+p move workspace prev_on_output
+    bindsym $mod+Shift+d move workspace next_on_output
+
+    bindsym $mod+x focus output left
+    bindsym $mod+c focus output right
+    bindsym $mod+Shift+x move output left 
+    bindsym $mod+Shift+c move output right
 
 bindsym $mod+0 workspace number 0
 bindsym $mod+1 workspace number 1
@@ -125,16 +145,18 @@ bindsym $mod+9 exec /home/jake/scripts/sway/focus-num 7
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+v splitv
-    bindsym $mod+s splith
+    # bindsym $mod+v splitv
+    # bindsym $mod+s splith
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+    bindsym $mod+t layout tabbed
+    # bindsym $mod+e kill
+    bindsym $mod+w kill
+    # bindsym $mod+b layout toggle split
 
     # Make the current focus fullscreen
-    bindsym $mod+d fullscreen
+    # bindsym $mod+d fullscreen
 
     # Toggle the current focus between tiling and floating mode
     bindsym $mod+f floating toggle
@@ -147,8 +169,8 @@ bindsym $mod+9 exec /home/jake/scripts/sway/focus-num 7
 #
 # Scratchpad:
 #
-    bindsym $mod+Shift+i move scratchpad
-    bindsym $mod+i scratchpad show
+    # bindsym $mod+Shift+i move scratchpad
+    # bindsym $mod+i scratchpad show
 
  bindsym $mod+Shift+s sticky toggle 
     
@@ -175,9 +197,133 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+# bindsym $mod+r mode "resize"
 
-# Volume keybinds
+
+# mode "window" {
+#     # Move your focus around
+#     bindsym $left exec "swaymsg focus left && swaymsg mode default"
+#     bindsym $down exec "swaymsg focus up && swaymsg mode default"
+#     bindsym $up exec "swaymsg focus down && swaymsg mode default"
+#     bindsym $right exec "swaymsg focus left && swaymsg mode default"
+#     bindsym bracketleft exec "swaymsg workspace prev_on_output && swaymsg mode default"
+#     bindsym bracketright exec "swaymsg workspace next_on_output && swaymsg mode default"
+
+#     # Move the focused window with the same, but add Shift
+#     bindsym Shift+$left exec "swaymsg move left && swaymsg mode default"
+#     bindsym Shift+$down exec "swaymsg move down && swaymsg mode default"
+#     bindsym Shift+$up exec "swaymsg move up && swaymsg mode default"
+#     bindsym Shift+$right exec "swaymsg move right && swaymsg mode default"
+#     # Ditto, with arrow keys
+#     bindsym Shift+Left exec "swaymsg move left && swaymsg mode default"
+#     bindsym Shift+Down exec "swaymsg move down && swaymsg mode default"
+#     bindsym Shift+Up exec "swaymsg move up && swaymsg mode default"
+#     bindsym Shift+Right exec "swaymsg move right && swaymsg mode default"
+#     bindsym Shift+bracketleft exec "swaymsg move workspace prev_on_output && swaymsg mode default"
+#     bindsym Shift+bracketright exec "swaymsg move workspace next_on_output && swaymsg mode default"
+
+#     bindsym 0 exec "swaymsg workspace number 0 && swaymsg mode default"
+#     bindsym 1 exec "swaymsg workspace number 1 && swaymsg mode default"
+#     bindsym 2 exec "swaymsg workspace number 2 && swaymsg mode default"
+#     bindsym 3 exec "swaymsg exec /home/jake/scripts/sway/focus-num 1 && swaymsg mode default"
+#     bindsym 4 exec "swaymsg exec /home/jake/scripts/sway/focus-num 2 && swaymsg mode default"
+#     bindsym 5 exec "swaymsg exec /home/jake/scripts/sway/focus-num 3 && swaymsg mode default"
+#     bindsym 6 exec "swaymsg exec /home/jake/scripts/sway/focus-num 4 && swaymsg mode default"
+#     bindsym 7 exec "swaymsg exec /home/jake/scripts/sway/focus-num 5 && swaymsg mode default"
+#     bindsym 8 exec "swaymsg exec /home/jake/scripts/sway/focus-num 6 && swaymsg mode default"
+#     bindsym 9 exec "swaymsg exec /home/jake/scripts/sway/focus-num 7 && swaymsg mode default"
+
+#     bindsym v exec "swaymsg splitv && swaymsg mode default"
+#     bindsym s exec "swaymsg splith && swaymsg mode default"
+#     bindsym w exec "swaymsg layout tabbed && swaymsg mode default"
+
+#     bindsym n exec "swaymsg layout split && swaymsg mode default"
+#     bindsym t exec "swaymsg layout tabbed && swaymsg mode default"
+
+
+#     bindsym q exec "swaymsg kill && swaymsg mode default"
+#     bindsym e exec "swaymsg kill && swaymsg mode default"
+
+#     bindsym d exec "swaymsg fullscreen && swaymsg mode default"
+#     bindsym f exec "swaymsg floating toggle && swaymsg mode default"
+#     bindsym space exec "swaymsg focus mode_toggle && swaymsg mode default"
+#     bindsym a exec "swaymsg focus parent && swaymsg mode default"
+# #
+# # Scratchpad:
+# #
+#     bindsym Shift+i move scratchpad
+#     bindsym i scratchpad show
+
+#     bindsym Shift+s sticky toggle
+
+#     bindsym period exec "swaymsg exec /home/jake/scripts/sway/new-workspace && swaymsg mode default"
+#     bindsym Shift+period exec "swaymsg exec /home/jake/scripts/sway/move-to-new-workspace && swaymsg mode default"
+#     bindsym Escape mode "default"
+
+#     bindsym Shift+Return exec "swaymsg mode default && $term"
+# }
+
+
+mode "window" {
+    # Move your focus around
+    bindsym $left focus left
+    bindsym $down focus up
+    bindsym $up focus down
+    bindsym $right focus left
+    bindsym bracketleft workspace prev_on_output
+    bindsym bracketright workspace next_on_output
+
+    # Move the focused window with the same, but add Shift
+    bindsym Shift+$left move left
+    bindsym Shift+$down move down
+    bindsym Shift+$up move up
+    bindsym Shift+$right move right
+
+    bindsym 0 workspace number 0
+    bindsym 1 workspace number 1
+    bindsym 2 workspace number 2
+    bindsym 3 exec "/home/jake/scripts/sway/focus-num 1"
+    bindsym 4 exec "/home/jake/scripts/sway/focus-num 2"
+    bindsym 5 exec "/home/jake/scripts/sway/focus-num 3"
+    bindsym 6 exec "/home/jake/scripts/sway/focus-num 4"
+    bindsym 7 exec "/home/jake/scripts/sway/focus-num 5"
+    bindsym 8 exec "/home/jake/scripts/sway/focus-num 6"
+    bindsym 9 exec "/home/jake/scripts/sway/focus-num 7"
+
+    bindsym v swaymsg splitv
+    bindsym s swaymsg splith
+    bindsym w exec "swaymsg layout tabbed && swaymsg mode default"
+
+    # bindsym n exec "swaymsg layout split && swaymsg mode default"
+    bindsym t exec "swaymsg layout tabbed && swaymsg mode default"
+
+
+    # bindsym q kill
+    # bindsym e kill
+
+    bindsym d exec "swaymsg fullscreen && swaymsg mode default"
+    bindsym f exec "swaymsg floating toggle && swaymsg mode default"
+    bindsym space exec "swaymsg focus mode_toggle && swaymsg mode default"
+    bindsym a exec "swaymsg focus parent && swaymsg mode default"
+#
+# Scratchpad:
+#
+    # bindsym Shift+i move scratchpad
+    # bindsym i scratchpad show
+
+    bindsym Shift+s sticky toggle
+
+    bindsym period exec "swaymsg exec /home/jake/scripts/sway/new-workspace && swaymsg mode default"
+    bindsym Shift+period exec "swaymsg exec /home/jake/scripts/sway/move-to-new-workspace && swaymsg mode default"
+    bindsym Escape mode "default"
+
+    bindsym Shift+Return exec "swaymsg mode default && $term"
+}
+
+bindsym control+w mode "window"
+
+
+# Volume inds
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
@@ -190,10 +336,10 @@ bindsym XF86MonBrightnessUp exec brightnessctl set "5%+"
 bindsym Print exec slurp | grim -g - - | wl-copy
 
 # Scale
-bindsym $mod+equal exec /home/jake/.config/sway/change_scale scale+.10
-bindsym $mod+minus exec /home/jake/.config/sway/change_scale scale-.10
-bindsym $mod+plus exec /home/jake/.config/sway/change_scale scale+.30
-bindsym $mod+underscore exec /home/jake/.config/sway/change_scale scale-.30
+# bindsym $mod+equal exec /home/jake/.config/sway/change_scale scale+.10
+# bindsym $mod+minus exec /home/jake/.config/sway/change_scale scale-.10
+# bindsym $mod+plus exec /home/jake/.config/sway/change_scale scale+.30
+# bindsym $mod+underscore exec /home/jake/.config/sway/change_scale scale-.30
 
 # warpd hotkeys
 
@@ -209,9 +355,9 @@ input type:touchpad {
     pointer_accel -0.25
 }
 
-assign [app_id="discord"] 1
-assign [class="Signal"] 1
-assign [app_id="one.ablaze.floorp"] 2
+# assign [app_id="discord"] 1
+# assign [class="Signal"] 1
+# assign [app_id="one.ablaze.floorp"] 2
 
 for_window [class="steam"] floating enable 
 for_window [class="XIVLauncher.Core"] floating enable

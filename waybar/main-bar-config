@@ -1,7 +1,8 @@
 {
 	"include": "./config",
-	"output": ["HDMI-A-1"],
+	"position": "right",
+	"output": ["DP-7"],
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "clock", "custom/nightlight", "tray"]
+    "modules-center": [],
+    "modules-right": ["tray"]
 }

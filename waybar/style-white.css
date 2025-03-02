@@ -38,10 +38,17 @@ window#waybar {
     margin-left: -8px;
 }
 
-#backlight, #window, #clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray, #mode {
+#backlight, #window, #clock, #battery, #cpu, #memory, #network, #pulseaudio, #custom-spotify, #tray {
     padding: 0 8px;
     margin: 0 2px;
 }
+
+#mode {
+   padding: 0px;
+   margin: 10px -2px -2px;
+}
+
+
 
 #clock {
     font-weight: bold;

@@ -108,6 +108,8 @@ set-face global BufferPadding "%opt{black}"
 
 set-face global DiagnosticError "%opt{red2},%opt{black}+u"
 set-face global DiagnosticWarning "%opt{white},%opt{black}+u"
+set-face global DiagnosticInfo "%opt{white},%opt{black}+u"
+set-face global DiagnosticTagUnnecessary "%opt{white},%opt{black}+u"
 
 set-face global InfoDefault               Information
 set-face global InfoBlock                 "%opt{white}"
